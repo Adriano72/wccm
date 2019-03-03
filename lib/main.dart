@@ -18,6 +18,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  int counter = 0;
+  List<NewsModel> images = [];
+
+  void fetchImage() async {
+    counter++;
+    var response = await get('https://jsonplaceholder.typicode.com/photos/$counter');
+    var imageModel = ImageModel.fromJson(json.decode(response.body));
+    
+    setState(() {
+      images.add(imageModel);
+    });    
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
