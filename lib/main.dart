@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
     var itemModel = NewsModel.fromJson(json.decode(response.body));
     
     setState(() {
-      allTheNews = itemModel;
+      allTheNews.add(itemModel);
     });    
   }
 

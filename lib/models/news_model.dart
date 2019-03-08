@@ -1,5 +1,5 @@
 class NewsModel {
-  int id;
+  String id;
   String title;
   String body;
   String imageId;
