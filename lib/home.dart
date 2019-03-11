@@ -2,6 +2,11 @@ import "package:flutter/material.dart";
 
 class Home extends StatelessWidget {
 
+  final List news;
+
+  Home({@required this.news});
+
+
   Widget _buildSideDrawer(BuildContext context) {
     return Drawer(
       child: Column(
