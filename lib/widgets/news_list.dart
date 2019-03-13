@@ -7,21 +7,11 @@ class Contact {
 }
 
 class ListPage extends StatelessWidget {
-  ListPage({Key key, this.layoutGroup, this.onLayoutToggle}) : super(key: key);
-  final VoidCallback onLayoutToggle;
+  ListPage({News news});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MainAppBar(
-        layoutGroup: layoutGroup,
-        layoutType: LayoutType.list,
-        onLayoutToggle: onLayoutToggle,
-      ),
-      body: Container(
-        child: _buildContent(),
-      ),
-    );
+    return _buildContent();
   }
 
   Widget _buildContent() {

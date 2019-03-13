@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "widgets/news_list.dart";
 
 class Home extends StatelessWidget {
 
