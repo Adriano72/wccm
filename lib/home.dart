@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
         title: Text('WCCM'),
        
       ),
-      body: Text("Ciao"),
+      body: ListPage(news),
     );
   }
 }

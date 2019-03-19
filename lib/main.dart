@@ -39,6 +39,7 @@ class _MyAppState extends State<MyApp> {
     
     setState(() {
       allTheNews.add(itemModel);
+      print('ALL THE NEWS $allTheNews');
     });    
   }
 
