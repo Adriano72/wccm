@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-class ListPage extends StatelessWidget {
 
+class ListPage extends StatelessWidget {
   final List news;
- 
+
   ListPage(this.news);
 
   @override
@@ -15,9 +15,12 @@ class ListPage extends StatelessWidget {
         itemCount: news.length,
         itemBuilder: (BuildContext content, int index) {
           return ListTile(
-      title: Text(news[index].title),
-      subtitle: Text(news[index].body),
-    );
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage("${news[index].imageUrl}"),
+            ),
+            title: Text(news[index].title),
+            subtitle: Text(news[index].body),
+          );
         });
   }
 }
@@ -31,4 +34,3 @@ class NewsListTile extends ListTile {
   );
 }
 */
-

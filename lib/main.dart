@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter/rendering.dart';
 // Import flutter helper library
-import 'package:http/http.dart' show get; 
+import 'package:http/http.dart' show get;
 import 'models/news_model.dart';
 import 'dart:convert';
 //import 'widgets/image_list.dart';
@@ -23,7 +23,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final apiURL = 'https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&include=1';
+  final apiURL =
+      'https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&include=1';
   List<NewsModel> allTheNews = [];
   String test = '';
 
@@ -34,15 +35,30 @@ class _MyAppState extends State<MyApp> {
   }
 
   void fetchAllNews() async {
-    var response = await get('https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&include=1');
-    var itemModel = NewsModel.fromJson(json.decode(response.body));
-    
-    setState(() {
-      allTheNews.add(itemModel);
-      print('ALL THE NEWS $allTheNews');
-    });    
-  }
+    var response = await get(
+        'https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&include=1');
 
+    print('RESPONSE ${json.decode(response.body)}');
+
+    var decodedResponse = json.decode(response.body);
+
+    List itemsNode = decodedResponse['items'];
+
+    List allAssets = decodedResponse['includes']['Asset'];
+
+    itemsNode.forEach((item) {
+      print('ASSETS: $item');
+      var imageId = item['fields']['image']['sys']['id'];
+      Map<String, dynamic> urlNode = allAssets.firstWhere(
+          (imgValue) => imgValue['sys']['id'] == imageId,
+          orElse: () => null);
+      var itemModel = NewsModel.fromJson(item, urlNode);
+      setState(() {
+        allTheNews.add(itemModel);
+        print('ALL THE NEWS $allTheNews');
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
