@@ -35,8 +35,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void fetchAllNews() async {
-    var response = await get(
-        'https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&include=1');
+    var response = await get(apiURL);
 
     print('RESPONSE ${json.decode(response.body)}');
 
