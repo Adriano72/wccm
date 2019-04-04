@@ -10,7 +10,6 @@ class TimerSettings extends StatefulWidget {
 class _TimerSettingsState extends State<TimerSettings> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       constraints: BoxConstraints.expand(
         height: Theme.of(context).textTheme.display1.fontSize * 1.1 + 200.0,
@@ -25,7 +24,7 @@ class _TimerSettingsState extends State<TimerSettings> {
               .copyWith(color: Colors.white)),
       foregroundDecoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage('https://www.example.com/images/frame.png'),
+          image: NetworkImage('https://placeimg.com/640/480/any'),
           centerSlice: Rect.fromLTRB(270.0, 180.0, 1360.0, 730.0),
         ),
       ),

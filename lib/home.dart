@@ -10,32 +10,28 @@ class Home extends StatefulWidget {
 
   @override
   _HomeState createState() {
-    return _HomeState(news: news);
+    return _HomeState();
   }
 }
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-  List news = [];
-  List newNews;
-
-  _HomeState({@required this.news});
+  List allNews;
+  
+  
+  List<Widget> _children;
 
   @override
   void initState() {
+    //print("allnews__ $widget.news");
+    _children = [
+      ListPage(widget.news),
+      TimerSettings(),
+      TimerSettings(),
+    ];
     super.initState();
-    setState(() {
-      newNews = news;
-    });
   }
 
-  final List<Widget> _children = [
-    ListPage(fetched_news: news),
-    TimerSettings(),
-    TimerSettings(),
-  ];
-
-  @override
   Widget _buildSideDrawer(BuildContext context) {
     return Drawer(
       child: Column(
