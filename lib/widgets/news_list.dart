@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ListPage extends StatelessWidget {
-  final List news;
+  final List fetched_news;
 
-  ListPage(this.news);
+  ListPage({Key key, this.fetched_news}) : super(key: key)
 
   @override
   Widget build(BuildContext context) {
@@ -12,25 +12,15 @@ class ListPage extends StatelessWidget {
 
   Widget _buildContent() {
     return ListView.builder(
-        itemCount: news.length,
+        itemCount: fetched_news.length,
         itemBuilder: (BuildContext content, int index) {
           return ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage("${news[index].imageUrl}"),
+              backgroundImage: NetworkImage("${fetched_news[index].imageUrl}"),
             ),
-            title: Text(news[index].title),
-            subtitle: Text(news[index].body),
+            title: Text(fetched_news[index].title),
+            subtitle: Text(fetched_news[index].body),
           );
         });
   }
 }
-/*
-class NewsListTile extends ListTile {
-  NewsListTile(singleNews)
-      : super(
-    title: Text(singleNews.title),
-    subtitle: Text(singleNews.body),
-    //leading: CircleAvatar(child: Text(singleNews.name)),
-  );
-}
-*/
