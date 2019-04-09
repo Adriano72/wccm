@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'dart:async';
 
 class TimerSettings extends StatefulWidget {
   @override
@@ -8,27 +10,42 @@ class TimerSettings extends StatefulWidget {
 }
 
 class _TimerSettingsState extends State<TimerSettings> {
+  Timer _timer;
+  int _start = 10;
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+        oneSec,
+        (Timer timer) => setState(() {
+              if (_start < 1) {
+                timer.cancel();
+              } else {
+                _start = _start - 1;
+              }
+            }));
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints.expand(
-        height: Theme.of(context).textTheme.display1.fontSize * 1.1 + 200.0,
-      ),
-      padding: const EdgeInsets.all(8.0),
-      color: Colors.teal.shade700,
-      alignment: Alignment.center,
-      child: Text('Hello World',
-          style: Theme.of(context)
-              .textTheme
-              .display1
-              .copyWith(color: Colors.white)),
-      foregroundDecoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage('https://placeimg.com/640/480/any'),
-          centerSlice: Rect.fromLTRB(270.0, 180.0, 1360.0, 730.0),
-        ),
-      ),
-      transform: Matrix4.rotationZ(0.1),
-    );
+    return Scaffold(
+        appBar: AppBar(title: Text("Timer test")),
+        body: Column(
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                startTimer();
+              },
+              child: Text("start"),
+            ),
+            Text("$_start")
+          ],
+        ));
   }
 }

@@ -24,14 +24,14 @@ class _HomeState extends State<Home> {
   void initState() {
     //print("allnews__ $widget.news");
     _children = [
-      ListPage(widget.news),
+      ListPage(),
       TimerSettings(),
       TimerSettings(),
     ];
     super.initState();
   }
 
-  Widget _buildSideDrawer(BuildContext context) {
+  Widget _buildSideDrawer(BuildContext context) { // This is the Drawer widget
     return Drawer(
       child: Column(
         children: <Widget>[
