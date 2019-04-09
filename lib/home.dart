@@ -5,7 +5,6 @@ import 'widgets/timer/timer_settings.dart';
 
 class Home extends StatefulWidget {
   final List news;
-
   Home({Key key, @required this.news}) : super(key: key);
 
   @override
@@ -57,7 +56,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('WCCM'),
       ),
-      body: _children[_currentIndex],
+      body: _children.elementAt(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex:
