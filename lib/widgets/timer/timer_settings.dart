@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 class TimerSettings extends StatefulWidget {
