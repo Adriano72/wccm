@@ -39,6 +39,12 @@ class _TimerSettingsState extends State<TimerSettings> {
     super.dispose();
   }
 
+  _storePrepTime(_prepTime) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int preparationTime = _prepTime;
+  await prefs.setInt('counter', preparationTime);
+}
+
   @override
   Widget build(BuildContext context) {
     return Center(
