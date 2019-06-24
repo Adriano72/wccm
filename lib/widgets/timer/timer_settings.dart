@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import 'package:audioplayers/audio_cache.dart';
 
 class TimerSettings extends StatefulWidget {
   @override
@@ -17,8 +18,15 @@ class _TimerSettingsState extends State<TimerSettings> {
   int med_hours = 0;
   int med_minutes = 0;
   bool timerStarted = false;
-
   Timer _timer;
+
+  static AudioCache player = AudioCache(prefix: 'sounds/');
+
+  @override
+  void initState() {
+    player.load('LaurenceBowlEnd.mp3');
+    super.initState();
+  }
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -44,15 +52,12 @@ class _TimerSettingsState extends State<TimerSettings> {
     super.dispose();
   }
 
-  String formatTime (Duration rawDuration) {
-    
-    if(rawDuration.inHours > 0) {
+  String formatTime(Duration rawDuration) {
+    if (rawDuration.inHours > 0) {
       return '${_med_duration.inHours}:${_med_duration.inMinutes}:${_med_duration.inSeconds.remainder(60)}';
-    }
-    else {
+    } else {
       return '${_med_duration.inMinutes}:${_med_duration.inSeconds.remainder(60)}';
     }
-
   }
 
   _storePrepTime(_prepTime) async {
@@ -108,15 +113,23 @@ class _TimerSettingsState extends State<TimerSettings> {
             ),
           ),
           RaisedButton(
-            color: Colors.blueGrey,
+            color: Colors.deepOrange,
             onPressed: () {
-              this.setState(
-                () => timerStarted = true,
-              );
-              print("BUTTON PRESSED");
-              startTimer();
+              if (timerStarted) {
+                _timer.cancel();
+                this.setState(
+                  () => timerStarted = false,
+                );
+              } else {
+                player.play('LaurenceBowlEnd.mp3');
+                this.setState(
+                  () => timerStarted = true,
+                );
+                print("BUTTON PRESSED");
+                startTimer();
+              }
             },
-            child: timerStarted ? Text("Stop"): Text("Stop"),
+            child: timerStarted ? Text("Stop") : Text("Start"),
           ),
         ],
       ),

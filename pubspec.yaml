@@ -16,8 +16,9 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.12.0
-  flutter_duration_picker: "^1.0.4"
+  flutter_duration_picker: ^1.0.4
   shared_preferences: ^0.5.2
+  audioplayers: ^0.8.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -46,6 +47,7 @@ flutter:
 
   assets:
   - assets/images/bowl.png
+  - assets/sounds/LaurenceBowlEnd.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
