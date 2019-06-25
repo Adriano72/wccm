@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 //import 'package:flutter/rendering.dart';
 // Import flutter helper library
 
-
 //import 'widgets/image_list.dart';
 
 import './home.dart';
@@ -22,7 +21,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,8 +33,7 @@ class _MyAppState extends State<MyApp> {
         '/': (BuildContext context) => Home(),
       },
       onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(
-            builder: (BuildContext context) => Home());
+        return MaterialPageRoute(builder: (BuildContext context) => Home());
       },
     );
   }

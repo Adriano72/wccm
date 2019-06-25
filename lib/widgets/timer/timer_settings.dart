@@ -3,6 +3,7 @@ import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class TimerSettings extends StatefulWidget {
   @override
@@ -18,9 +19,11 @@ class _TimerSettingsState extends State<TimerSettings> {
   int med_hours = 0;
   int med_minutes = 0;
   bool timerStarted = false;
-  Timer _timer;
+  Timer timer;
 
-  static AudioCache player = AudioCache(prefix: 'sounds/');
+  static AudioPlayer advancedPlayer = AudioPlayer();
+  AudioCache player = AudioCache(
+      respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
 
   @override
   void initState() {
@@ -30,12 +33,12 @@ class _TimerSettingsState extends State<TimerSettings> {
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
-    Timer.periodic(
+    timer = Timer.periodic(
       oneSec,
-      (_timer) => setState(
+      (timer) => setState(
             () {
               if (_med_duration.inSeconds < 1) {
-                _timer.cancel();
+                timer.cancel();
                 timerStarted = false;
               } else {
                 this.setState(() => _med_duration = _med_duration - oneSec);
@@ -48,7 +51,7 @@ class _TimerSettingsState extends State<TimerSettings> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    timer.cancel();
     super.dispose();
   }
 
@@ -101,11 +104,14 @@ class _TimerSettingsState extends State<TimerSettings> {
                   },
                   child: Text(
                     !timerStarted
-                        ? 'MEDITATION: ${_med_duration.inHours}:${_med_duration.inMinutes}'
+                        ? 'MEDITATION TIME \n ${_med_duration.inHours}:${_med_duration.inMinutes.remainder(60)}'
                         : formatTime(_med_duration),
+                    textAlign: TextAlign.center,
                     style: TextStyle(
+                        height: 1.3,
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
+                        fontFamily: "Rock Salt",
                         color: Colors.red),
                   ),
                 ),
@@ -116,7 +122,8 @@ class _TimerSettingsState extends State<TimerSettings> {
             color: Colors.deepOrange,
             onPressed: () {
               if (timerStarted) {
-                _timer.cancel();
+                timer.cancel();
+                advancedPlayer.stop();
                 this.setState(
                   () => timerStarted = false,
                 );
