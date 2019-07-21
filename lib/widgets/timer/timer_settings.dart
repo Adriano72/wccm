@@ -153,7 +153,7 @@ class _TimerSettingsState extends State<TimerSettings> {
               ],
             ),
           ),
-          //:TODO Gestire che il timer parta se il tempo è maggiore di zero
+          //:TODO Gestire che il timer parta se il tempo è maggiore di zero !!
           RaisedButton(
             color: Colors.deepOrange,
             onPressed: () {
