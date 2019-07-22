@@ -6,6 +6,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:toast/toast.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 
 class TimerSettings extends StatefulWidget {
   @override
@@ -15,11 +16,11 @@ class TimerSettings extends StatefulWidget {
 }
 
 class _TimerSettingsState extends State<TimerSettings> {
-  Duration _prep_duration = Duration(hours: 0, minutes: 0);
-  Duration _med_duration = Duration(hours: 0, minutes: 20);
-  int prep_seconds = 5;
-  int med_hours = 0;
-  int med_minutes = 0;
+  Duration medDuration = Duration(hours: 0, minutes: 20);
+  int seconds = 1200;
+  int prepSeconds = 5;
+  int medHours = 0;
+  int medMinutes = 0;
   bool timerStarted = false;
   Timer timer;
   dynamic playerState;
@@ -60,15 +61,15 @@ class _TimerSettingsState extends State<TimerSettings> {
         oneSec,
         (timer) => setState(
           () {
-            if (_med_duration.inSeconds < 1) {
+            if (medDuration.inSeconds < 1) {
               player.play('LaurenceBowlEnd.mp3');
               timer.cancel();
               timerStarted = false;
               showToast('Session ended');
               _getStoredMedTime();
             } else {
-              this.setState(() => _med_duration = _med_duration - oneSec);
-              print("Time left: $_med_duration");
+              this.setState(() => medDuration = medDuration - oneSec);
+              print("Time left: $medDuration");
             }
           },
         ),
@@ -84,9 +85,9 @@ class _TimerSettingsState extends State<TimerSettings> {
 
   String formatTime(Duration rawDuration) {
     if (rawDuration.inHours > 0) {
-      return '${_med_duration.inHours}:${_med_duration.inMinutes.remainder(60)}:${_med_duration.inSeconds.remainder(60)}';
+      return '${medDuration.inHours}:${medDuration.inMinutes.remainder(60)}:${medDuration.inSeconds.remainder(60)}';
     } else {
-      return '${_med_duration.inMinutes}:${_med_duration.inSeconds.remainder(60)}';
+      return '${medDuration.inMinutes}:${medDuration.inSeconds.remainder(60)}';
     }
   }
 
@@ -103,7 +104,7 @@ class _TimerSettingsState extends State<TimerSettings> {
     int storedMedTimeMinutes = (prefs.getInt('timerPresetsMinutes'));
     storedTime = {'hours': storedMedTimeHour, 'minutes': storedMedTimeMinutes};
     setState(() {
-      _med_duration =
+      medDuration =
           Duration(hours: storedMedTimeHour, minutes: storedMedTimeMinutes);
     });
     print(
@@ -120,34 +121,35 @@ class _TimerSettingsState extends State<TimerSettings> {
         children: <Widget>[
           /*Image.asset('assets/images/bowl.png',
               width: MediaQuery.of(context).size.width * 0.3),*/
-          Flexible(
-            child: DurationPicker(
-              duration: _med_duration,
-              onChange: (meditationDuration) {
-                try {
-                  if (meditationDuration != null) {
-                    this.setState(
-                      () {
-                        _med_duration = meditationDuration;
-                        med_hours = _med_duration.inHours;
-                        med_minutes = _med_duration.inMinutes.remainder(60);
+          Flexible(child: SingleCircularSlider(60, seconds)
 
-                        print("Med hours: $med_hours");
-                        print("Med minutes: $med_minutes");
-                      },
-                    );
-                  } else {
-                    this.setState(
-                      () => _med_duration = Duration(minutes: 1),
-                    );
-                  }
-                } catch (e) {
-                  print(e);
-                }
-              },
-              snapToMins: 5.0,
-            ),
-          ),
+//            DurationPicker(
+//              duration: medDuration,
+//              onChange: (meditationDuration) {
+//                try {
+//                  if (meditationDuration != null) {
+//                    this.setState(
+//                      () {
+//                        medDuration = meditationDuration;
+//                        medHours = medDuration.inHours;
+//                        medMinutes = medDuration.inMinutes.remainder(60);
+//
+//                        print("Med hours: $medHours");
+//                        print("Med minutes: $medMinutes");
+//                      },
+//                    );
+//                  } else {
+//                    this.setState(
+//                      () => medDuration = Duration(minutes: 1),
+//                    );
+//                  }
+//                } catch (e) {
+//                  print(e);
+//                }
+//              },
+//              snapToMins: 5.0,
+//            ),
+              ),
           Flexible(
             child: FlatButton(
               onPressed: () async {
@@ -156,7 +158,7 @@ class _TimerSettingsState extends State<TimerSettings> {
                 // chosen when the dialog is accepted. Null when cancelled.
                 Duration meditationDuration = await showDurationPicker(
                   context: context,
-                  initialTime: _med_duration,
+                  initialTime: medDuration,
                 );
 
                 _storeMedTime(
@@ -165,22 +167,22 @@ class _TimerSettingsState extends State<TimerSettings> {
               },
               child: Text(
                 !timerStarted
-                    ? 'MEDITATION TIME \n ${_med_duration.inHours}:${_med_duration.inMinutes.remainder(60)}'
-                    : formatTime(_med_duration),
+                    ? 'MEDITATION TIME \n ${medDuration.inHours}:${medDuration.inMinutes.remainder(60)}'
+                    : formatTime(medDuration),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    height: 1.3,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Rock Salt",
-                    color: Colors.red),
+                  height: 1.3,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Rock Salt",
+                ),
               ),
             ),
           ),
           //:TODO Gestire che il timer parta se il tempo è maggiore di zero !!
           Flexible(
             child: RaisedButton(
-              color: Colors.deepOrange,
+              //color: Colors.deepOrange,
               onPressed: () {
                 if (timerStarted) {
                   Wakelock.toggle(on: false);

@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   toast: ^0.1.5
   wakelock: ^0.1.2+5
+  flutter_circular_slider: ^2.5.0
 
 dev_dependencies:
   flutter_test:
