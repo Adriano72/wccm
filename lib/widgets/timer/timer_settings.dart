@@ -16,12 +16,13 @@ class TimerSettings extends StatefulWidget {
 
 class _TimerSettingsState extends State<TimerSettings> {
   Duration _prep_duration = Duration(hours: 0, minutes: 0);
-  Duration _med_duration = Duration(hours: 0, minutes: 0);
+  Duration _med_duration = Duration(hours: 0, minutes: 20);
   int prep_seconds = 5;
   int med_hours = 0;
   int med_minutes = 0;
   bool timerStarted = false;
   Timer timer;
+  dynamic playerState;
 
   void showToast(String message) {
     Toast.show(message, context,
@@ -35,14 +36,25 @@ class _TimerSettingsState extends State<TimerSettings> {
   @override
   void initState() {
     player.load('LaurenceBowlEnd.mp3');
-    _getStoredMedTime();
+    // Checks if the AudioPlayer is playing. States available are AudioPlayerState.PLAYING (STOPPED or COMPLETED)
+    // and disable screen lock is audio is STOPPED or COMPLETED and timerStarted is false (timer is not running)
+    advancedPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
+      print('Current player state: $s');
+      setState(() => playerState = s);
+      if (!timerStarted &&
+          (playerState == AudioPlayerState.COMPLETED ||
+              playerState == AudioPlayerState.STOPPED)) {
+        Wakelock.toggle(on: false);
+      }
+      ;
+    });
     super.initState();
   }
 
   void startTimer() {
     Wakelock.toggle(on: true);
     const oneSec = const Duration(seconds: 1);
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 1), () {
       player.play('LaurenceBowlEnd.mp3');
       timer = Timer.periodic(
         oneSec,
@@ -54,7 +66,6 @@ class _TimerSettingsState extends State<TimerSettings> {
               timerStarted = false;
               showToast('Session ended');
               _getStoredMedTime();
-              Wakelock.toggle(on: false);
             } else {
               this.setState(() => _med_duration = _med_duration - oneSec);
               print("Time left: $_med_duration");
@@ -107,74 +118,89 @@ class _TimerSettingsState extends State<TimerSettings> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Image.asset('assets/images/bowl.png',
-              width: MediaQuery.of(context).size.width * 0.3),
-          Container(
-            child: Column(
-              children: <Widget>[
-                FlatButton(
-                  onPressed: () async {
-                    // Use it as a dialog, passing in an optional initial time
-                    // and returning a promise that resolves to the duration
-                    // chosen when the dialog is accepted. Null when cancelled.
-                    Duration meditationDuration = await showDurationPicker(
-                      context: context,
-                      initialTime: _med_duration,
-                    );
-                    if (meditationDuration != null) {
-                      this.setState(
-                        () {
-                          _med_duration = meditationDuration;
-                          med_hours = _med_duration.inHours;
-                          med_minutes = _med_duration.inMinutes.remainder(60);
+          /*Image.asset('assets/images/bowl.png',
+              width: MediaQuery.of(context).size.width * 0.3),*/
+          Flexible(
+            child: DurationPicker(
+              duration: _med_duration,
+              onChange: (meditationDuration) {
+                try {
+                  if (meditationDuration != null) {
+                    this.setState(
+                      () {
+                        _med_duration = meditationDuration;
+                        med_hours = _med_duration.inHours;
+                        med_minutes = _med_duration.inMinutes.remainder(60);
 
-                          print("Med hours: $med_hours");
-                          print("Med minutes: $med_minutes");
-                        },
-                      );
-                    }
-                    _storeMedTime(meditationDuration.inHours,
-                        meditationDuration.inMinutes);
-                    //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Chose duration: $meditationDuration")));
-                  },
-                  child: Text(
-                    !timerStarted
-                        ? 'MEDITATION TIME \n ${_med_duration.inHours}:${_med_duration.inMinutes.remainder(60)}'
-                        : formatTime(_med_duration),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        height: 1.3,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: "Rock Salt",
-                        color: Colors.red),
-                  ),
-                ),
-              ],
+                        print("Med hours: $med_hours");
+                        print("Med minutes: $med_minutes");
+                      },
+                    );
+                  } else {
+                    this.setState(
+                      () => _med_duration = Duration(minutes: 1),
+                    );
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
+              snapToMins: 5.0,
+            ),
+          ),
+          Flexible(
+            child: FlatButton(
+              onPressed: () async {
+                // Use it as a dialog, passing in an optional initial time
+                // and returning a promise that resolves to the duration
+                // chosen when the dialog is accepted. Null when cancelled.
+                Duration meditationDuration = await showDurationPicker(
+                  context: context,
+                  initialTime: _med_duration,
+                );
+
+                _storeMedTime(
+                    meditationDuration.inHours, meditationDuration.inMinutes);
+                //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Chose duration: $meditationDuration")));
+              },
+              child: Text(
+                !timerStarted
+                    ? 'MEDITATION TIME \n ${_med_duration.inHours}:${_med_duration.inMinutes.remainder(60)}'
+                    : formatTime(_med_duration),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    height: 1.3,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Rock Salt",
+                    color: Colors.red),
+              ),
             ),
           ),
           //:TODO Gestire che il timer parta se il tempo è maggiore di zero !!
-          RaisedButton(
-            color: Colors.deepOrange,
-            onPressed: () {
-              if (timerStarted) {
-                Wakelock.toggle(on: false);
-                timer.cancel();
-                advancedPlayer.stop();
-                this.setState(
-                  () => timerStarted = false,
-                );
-                _getStoredMedTime();
-              } else {
-                this.setState(
-                  () => timerStarted = true,
-                );
-                print("BUTTON PRESSED");
-                showToast('Session will start in 10 seconds...');
-                startTimer();
-              }
-            },
-            child: timerStarted ? Text("Stop") : Text("Start"),
+          Flexible(
+            child: RaisedButton(
+              color: Colors.deepOrange,
+              onPressed: () {
+                if (timerStarted) {
+                  Wakelock.toggle(on: false);
+                  timer.cancel();
+                  advancedPlayer.stop();
+                  this.setState(
+                    () => timerStarted = false,
+                  );
+                  _getStoredMedTime();
+                } else {
+                  this.setState(
+                    () => timerStarted = true,
+                  );
+                  print("BUTTON PRESSED");
+                  showToast('Session will start in 10 seconds...');
+                  startTimer();
+                }
+              },
+              child: timerStarted ? Text("Stop") : Text("Start"),
+            ),
           ),
         ],
       ),

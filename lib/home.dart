@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "widgets/news_list.dart";
-
+import 'package:flutter/services.dart';
 import 'widgets/timer/timer_settings.dart';
 
 class Home extends StatefulWidget {
@@ -16,8 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   List allNews;
-  
-  
+
   List<Widget> _children;
 
   @override
@@ -31,7 +30,8 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  Widget _buildSideDrawer(BuildContext context) { // This is the Drawer widget
+  Widget _buildSideDrawer(BuildContext context) {
+    // This is the Drawer widget
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -78,6 +78,18 @@ class _HomeState extends State<Home> {
   }
 
   void onTabTapped(int index) {
+    if (_currentIndex == 1) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
     setState(() {
       _currentIndex = index;
       print('CURRENT INDEX $_currentIndex');
