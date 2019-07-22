@@ -78,18 +78,18 @@ class _HomeState extends State<Home> {
   }
 
   void onTabTapped(int index) {
-    if (_currentIndex == 1) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]);
-    } else {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-    }
+//    if (_currentIndex == 1) {
+//      SystemChrome.setPreferredOrientations([
+//        DeviceOrientation.portraitUp,
+//      ]);
+//    } else {
+//      SystemChrome.setPreferredOrientations([
+//        DeviceOrientation.landscapeRight,
+//        DeviceOrientation.landscapeLeft,
+//        DeviceOrientation.portraitUp,
+//        DeviceOrientation.portraitDown,
+//      ]);
+//    }
     setState(() {
       _currentIndex = index;
       print('CURRENT INDEX $_currentIndex');
