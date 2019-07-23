@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/timer/timer_run.dart';
 //import 'package:flutter/rendering.dart';
 // Import flutter helper library
 
@@ -26,7 +27,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       //debugShowMaterialGrid: true,
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         primaryColor: Colors.blueGrey,
         accentColor: Colors.cyan[600],
         fontFamily: 'Montserrat',
@@ -39,12 +40,13 @@ class _MyAppState extends State<MyApp> {
           body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),
-
+      initialRoute: 'news',
       routes: {
-        '/': (BuildContext context) => Home(),
+        'news': (BuildContext context) => Home(),
+        'meditation': (BuildContext context) => TimerRun(),
       },
       onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(builder: (BuildContext context) => Home());
+        return MaterialPageRoute(builder: (BuildContext context) => TimerRun());
       },
     );
   }
