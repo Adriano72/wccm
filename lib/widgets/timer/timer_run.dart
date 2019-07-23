@@ -16,7 +16,7 @@ class TimerRun extends StatefulWidget {
 
 class _TimerRunState extends State<TimerRun> {
   Duration medDuration = Duration(hours: 0, minutes: 20);
-  bool timerStarted = false;
+  bool timerStarted = true;
   double timePercent = 1.0;
   Timer timer;
   dynamic playerState;
@@ -36,6 +36,7 @@ class _TimerRunState extends State<TimerRun> {
         Wakelock.toggle(on: false);
       }
     });
+    startTimer();
     super.initState();
   }
 
@@ -62,7 +63,6 @@ class _TimerRunState extends State<TimerRun> {
               timerStarted = false;
             } else {
               this.setState(() => medDuration = medDuration - oneSec);
-              print("Time left: $medDuration");
               updatePercentageIndicator();
             }
           },
@@ -89,52 +89,55 @@ class _TimerRunState extends State<TimerRun> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            SafeArea(
-              child: Text(
-                'Meditation',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  height: 1.3,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
+        child: Center(
+          child: Column(
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              SafeArea(
+                child: Text(
+                  'Meditation',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    height: 1.3,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            CircularPercentIndicator(
-              circularStrokeCap: CircularStrokeCap.round,
-              radius: 180.0,
-              lineWidth: 5.0,
-              percent: timePercent,
-              center: new Text(formatTime(medDuration)),
-              progressColor: Colors.green,
-            ),
-            Flexible(
-              child: RaisedButton(
-                color: Colors.lightBlueAccent,
-                onPressed: () {
-                  if (timerStarted) {
-                    Wakelock.toggle(on: false);
-                    timer.cancel();
-                    advancedPlayer.stop();
-                    this.setState(
-                      () => timerStarted = false,
-                    );
-                  } else {
-                    this.setState(
-                      () => timerStarted = true,
-                    );
-                    print("BUTTON PRESSED");
-                    startTimer();
-                  }
-                },
-                child: timerStarted ? Text("Stop") : Text("Start"),
+              CircularPercentIndicator(
+                circularStrokeCap: CircularStrokeCap.round,
+                radius: 180.0,
+                lineWidth: 5.0,
+                percent: timePercent,
+                center: new Text(formatTime(medDuration)),
+                progressColor: Colors.green,
               ),
-            ),
-          ],
+              Flexible(
+                child: RaisedButton(
+                  color: Colors.lightBlueAccent,
+                  onPressed: () {
+                    if (timerStarted) {
+                      Wakelock.toggle(on: false);
+                      timer.cancel();
+                      advancedPlayer.stop();
+                      //TODO: Implementare la funzione pausa.
+                      this.setState(
+                        () => timerStarted = false,
+                      );
+                    } else {
+                      this.setState(
+                        () => timerStarted = true,
+                      );
+                      print("BUTTON PRESSED");
+                      startTimer();
+                    }
+                  },
+                  child: timerStarted ? Text("Pause") : Text("Start"),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

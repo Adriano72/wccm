@@ -36,6 +36,7 @@ class _TimerSettingsState extends State<TimerSettings> {
   @override
   void initState() {
     player.load('LaurenceBowlEnd.mp3');
+    _getStoredMedTime();
     // Checks if the AudioPlayer is playing. States available are AudioPlayerState.PLAYING (STOPPED or COMPLETED)
     // and disable screen lock is audio is STOPPED or COMPLETED and timerStarted is false (timer is not running)
     advancedPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
@@ -46,7 +47,6 @@ class _TimerSettingsState extends State<TimerSettings> {
               playerState == AudioPlayerState.STOPPED)) {
         Wakelock.toggle(on: false);
       }
-      ;
     });
     super.initState();
   }
@@ -94,9 +94,13 @@ class _TimerSettingsState extends State<TimerSettings> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('timerPresetHours', hours);
     await prefs.setInt('timerPresetsMinutes', minutes.remainder(60));
+    print('MEDITATION TIME STORED!!!!!');
   }
 
+  //TODO Fare in modo che il timer i presenti con l'ultimo tempo selezionato
+
   Future<Map> _getStoredMedTime() async {
+    print('MEDITATION TIME GOTTEN!!!!!');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, int> storedTime = {};
     int storedMedTimeHour = (prefs.getInt('timerPresetHours'));
@@ -124,6 +128,7 @@ class _TimerSettingsState extends State<TimerSettings> {
             child: DurationPicker(
               duration: medDuration,
               onChange: (meditationDuration) {
+                print('on change****************');
                 try {
                   if (meditationDuration != null) {
                     this.setState(
@@ -141,27 +146,13 @@ class _TimerSettingsState extends State<TimerSettings> {
                       () => medDuration = Duration(minutes: 1),
                     );
                   }
+                  _storeMedTime(
+                      meditationDuration.inHours, meditationDuration.inMinutes);
                 } catch (e) {
                   print(e);
                 }
               },
               snapToMins: 1.0,
-            ),
-          ),
-          Flexible(
-            child: FlatButton(
-              onPressed: () async {
-                // Use it as a dialog, passing in an optional initial time
-                // and returning a promise that resolves to the duration
-                // chosen when the dialog is accepted. Null when cancelled.
-                Duration meditationDuration = await showDurationPicker(
-                  context: context,
-                  initialTime: medDuration,
-                );
-                _storeMedTime(
-                    meditationDuration.inHours, meditationDuration.inMinutes);
-                //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Chose duration: $meditationDuration")));
-              },
             ),
           ),
           Flexible(
