@@ -3,7 +3,7 @@ import 'package:wakelock/wakelock.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
-import 'package:toast/toast.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class TimerRun extends StatefulWidget {
@@ -39,8 +39,9 @@ class _TimerRunState extends State<TimerRun> {
         Wakelock.toggle(on: false);
       }
     });
-    startTimer();
+
     super.initState();
+    startTimer();
   }
 
   String formatTime(Duration rawDuration) {
@@ -51,18 +52,21 @@ class _TimerRunState extends State<TimerRun> {
     }
   }
 
-  void showToast(String message) {
-    Toast.show(message, context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
-  }
-
   void startTimer() {
+    showToast(
+      "Session will start in 10 seconds...",
+      duration: Duration(seconds: 2),
+      position: ToastPosition.bottom,
+      backgroundColor: Colors.black.withOpacity(0.8),
+      radius: 13.0,
+      textStyle: TextStyle(fontSize: 18.0),
+    );
     Wakelock.toggle(on: true);
     sessionCompleted = false;
     const oneSec = const Duration(seconds: 1);
     Future.delayed(const Duration(seconds: 5), () {
       isPreparationTime = false;
-      player.play('LaurenceBowlEnd.mp3');
+      if (mounted) player.play('LaurenceBowlEnd.mp3');
       timer = Timer.periodic(
         oneSec,
         (timer) {
@@ -75,7 +79,6 @@ class _TimerRunState extends State<TimerRun> {
                   timer.cancel();
                   timerStarted = false;
                   sessionCompleted = true;
-                  showToast('Session completed');
                 } else {
                   medDuration = medDuration - oneSec;
                   updatePercentageIndicator();
@@ -141,6 +144,7 @@ class _TimerRunState extends State<TimerRun> {
                 child: RaisedButton(
                   color: Colors.lightBlueAccent,
                   onPressed: () {
+                    showToastWidget(Text('hello oktoast'));
                     if (isPreparationTime) {
                       Wakelock.toggle(on: false);
                       advancedPlayer.stop();
@@ -152,8 +156,6 @@ class _TimerRunState extends State<TimerRun> {
                       timer.cancel();
                       advancedPlayer.stop();
                       Navigator.pop(context);
-                    } else {
-                      startTimer();
                     }
                   },
                   child: sessionCompleted ? Text("Back") : Text("Stop"),

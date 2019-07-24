@@ -15,7 +15,7 @@ dependencies:
   shared_preferences: ^0.5.2
   audioplayers: ^0.13.0
   cupertino_icons: ^0.1.2
-  toast: ^0.1.5
+  oktoast: ^2.2.0
   wakelock: ^0.1.2+5
   percent_indicator: ^2.1.1
 
