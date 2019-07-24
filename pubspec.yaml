@@ -29,6 +29,6 @@ flutter:
 
 
   assets:
-  - assets/images/bowl.png
-  - assets/sounds/LaurenceBowlEnd.mp3
+  - assets/images/
+  - assets/sounds/
 

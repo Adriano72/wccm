@@ -3,6 +3,7 @@ import 'package:wakelock/wakelock.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
+import 'package:toast/toast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class TimerRun extends StatefulWidget {
@@ -16,7 +17,9 @@ class TimerRun extends StatefulWidget {
 
 class _TimerRunState extends State<TimerRun> {
   Duration medDuration = Duration(hours: 0, minutes: 20);
-  bool timerStarted = true;
+  bool timerStarted = false;
+  bool isPreparationTime = true;
+  bool sessionCompleted = false;
   double timePercent = 1.0;
   Timer timer;
   dynamic playerState;
@@ -29,7 +32,7 @@ class _TimerRunState extends State<TimerRun> {
     // and disable screen lock is audio is STOPPED or COMPLETED and timerStarted is false (timer is not running)
     advancedPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
       print('Current player state: $s');
-      setState(() => playerState = s);
+      if (mounted) setState(() => playerState = s);
       if (!timerStarted &&
           (playerState == AudioPlayerState.COMPLETED ||
               playerState == AudioPlayerState.STOPPED)) {
@@ -48,37 +51,58 @@ class _TimerRunState extends State<TimerRun> {
     }
   }
 
+  void showToast(String message) {
+    Toast.show(message, context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+  }
+
   void startTimer() {
     Wakelock.toggle(on: true);
+    sessionCompleted = false;
     const oneSec = const Duration(seconds: 1);
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 5), () {
+      isPreparationTime = false;
       player.play('LaurenceBowlEnd.mp3');
       timer = Timer.periodic(
         oneSec,
-        (timer) => setState(
-          () {
-            if (medDuration.inSeconds < 1) {
-              player.play('LaurenceBowlEnd.mp3');
-              timer.cancel();
-              timerStarted = false;
-            } else {
-              this.setState(() => medDuration = medDuration - oneSec);
-              updatePercentageIndicator();
-            }
-          },
-        ),
+        (timer) {
+          if (mounted) {
+            timerStarted = true;
+            setState(
+              () {
+                if (medDuration.inSeconds < 1) {
+                  player.play('LaurenceBowlEnd.mp3');
+                  timer.cancel();
+                  timerStarted = false;
+                  sessionCompleted = true;
+                  showToast('Session completed');
+                } else {
+                  medDuration = medDuration - oneSec;
+                  updatePercentageIndicator();
+                }
+              },
+            );
+          }
+        },
       );
     });
+  }
+
+  @override
+  void dispose() {
+    print('disPOSEEEEEEEEEEE________');
+    advancedPlayer.stop();
+    super.dispose();
   }
 
   void updatePercentageIndicator() {
     int totalTimeInSeconds = widget.meditationTime.inSeconds;
     int timeLeft = (widget.meditationTime.inSeconds - medDuration.inSeconds);
-    setState(() {
-      timePercent = timeLeft / totalTimeInSeconds;
-    });
-
-    print(timeLeft);
+    if (mounted) {
+      setState(() {
+        timePercent = timeLeft / totalTimeInSeconds;
+      });
+    }
   }
 
   static AudioPlayer advancedPlayer = AudioPlayer();
@@ -117,23 +141,22 @@ class _TimerRunState extends State<TimerRun> {
                 child: RaisedButton(
                   color: Colors.lightBlueAccent,
                   onPressed: () {
-                    if (timerStarted) {
+                    if (isPreparationTime) {
+                      Wakelock.toggle(on: false);
+                      advancedPlayer.stop();
+                      Navigator.pop(context);
+                      return;
+                    }
+                    if (timerStarted || sessionCompleted) {
                       Wakelock.toggle(on: false);
                       timer.cancel();
                       advancedPlayer.stop();
-                      //TODO: Implementare la funzione pausa.
-                      this.setState(
-                        () => timerStarted = false,
-                      );
+                      Navigator.pop(context);
                     } else {
-                      this.setState(
-                        () => timerStarted = true,
-                      );
-                      print("BUTTON PRESSED");
                       startTimer();
                     }
                   },
-                  child: timerStarted ? Text("Pause") : Text("Start"),
+                  child: sessionCompleted ? Text("Back") : Text("Stop"),
                 ),
               ),
             ],
