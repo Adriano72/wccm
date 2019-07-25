@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "widgets/news_list.dart";
+import "package:wccm/widgets/news/news_list.dart";
 import 'package:flutter/services.dart';
 import 'widgets/timer/timer_settings.dart';
 

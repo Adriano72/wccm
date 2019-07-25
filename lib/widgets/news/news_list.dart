@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' show get;
-import '../models/news_model.dart';
+import '../../models/news_model.dart';
 import 'dart:convert';
 
 class ListPage extends StatefulWidget {
@@ -13,7 +13,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPage extends State<ListPage> {
   final apiURL =
-      'https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&include=1';
+      'https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&order=-sys.createdAt&include=1';
   List<NewsModel> allTheNews = [];
 
   void fetchAllNews() async {
@@ -61,7 +61,7 @@ class _ListPage extends State<ListPage> {
             backgroundImage: NetworkImage("${allTheNews[index].imageUrl}"),
           ),
           title: Text(allTheNews[index].title),
-          subtitle: Text(allTheNews[index].body),
+          subtitle: Text(allTheNews[index].blurb),
         );
       },
     );
