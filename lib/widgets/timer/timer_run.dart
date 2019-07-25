@@ -3,7 +3,7 @@ import 'package:wakelock/wakelock.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
-import 'package:oktoast/oktoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class TimerRun extends StatefulWidget {
@@ -39,6 +39,18 @@ class _TimerRunState extends State<TimerRun> {
         Wakelock.toggle(on: false);
       }
     });
+    showToast('Session will start in 10 seconds...', 3);
+  }
+
+  void showToast(String message, int seconds) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: seconds,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0);
 
     super.initState();
     startTimer();
@@ -53,18 +65,11 @@ class _TimerRunState extends State<TimerRun> {
   }
 
   void startTimer() {
-    showToast(
-      "Session will start in 10 seconds...",
-      duration: Duration(seconds: 2),
-      position: ToastPosition.bottom,
-      backgroundColor: Colors.black.withOpacity(0.8),
-      radius: 13.0,
-      textStyle: TextStyle(fontSize: 18.0),
-    );
+    Fluttertoast.cancel();
     Wakelock.toggle(on: true);
     sessionCompleted = false;
     const oneSec = const Duration(seconds: 1);
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 10), () {
       isPreparationTime = false;
       if (mounted) player.play('LaurenceBowlEnd.mp3');
       timer = Timer.periodic(
@@ -79,6 +84,7 @@ class _TimerRunState extends State<TimerRun> {
                   timer.cancel();
                   timerStarted = false;
                   sessionCompleted = true;
+                  showToast('Session completed', 3);
                 } else {
                   medDuration = medDuration - oneSec;
                   updatePercentageIndicator();
@@ -93,7 +99,7 @@ class _TimerRunState extends State<TimerRun> {
 
   @override
   void dispose() {
-    print('disPOSEEEEEEEEEEE________');
+    Fluttertoast.cancel();
     advancedPlayer.stop();
     super.dispose();
   }
@@ -144,7 +150,6 @@ class _TimerRunState extends State<TimerRun> {
                 child: RaisedButton(
                   color: Colors.lightBlueAccent,
                   onPressed: () {
-                    showToastWidget(Text('hello oktoast'));
                     if (isPreparationTime) {
                       Wakelock.toggle(on: false);
                       advancedPlayer.stop();
@@ -154,6 +159,7 @@ class _TimerRunState extends State<TimerRun> {
                     if (timerStarted || sessionCompleted) {
                       Wakelock.toggle(on: false);
                       timer.cancel();
+                      Fluttertoast.cancel();
                       advancedPlayer.stop();
                       Navigator.pop(context);
                     }

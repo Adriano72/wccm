@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'widgets/timer/timer_run.dart';
-import 'package:oktoast/oktoast.dart';
 //import 'package:flutter/rendering.dart';
 // Import flutter helper library
 
@@ -25,33 +24,30 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return OKToast(
-      child: MaterialApp(
-        //debugShowMaterialGrid: true,
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.blueGrey,
-          accentColor: Colors.cyan[600],
-          fontFamily: 'Montserrat',
+    return MaterialApp(
+      //debugShowMaterialGrid: true,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.blueGrey,
+        accentColor: Colors.cyan[600],
+        fontFamily: 'Montserrat',
 
-          // Define the default TextTheme. Use this to specify the default
-          // text styling for headlines, titles, bodies of text, and more.
-          textTheme: TextTheme(
-            headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-          ),
+        // Define the default TextTheme. Use this to specify the default
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
-        initialRoute: 'news',
-        routes: {
-          'news': (BuildContext context) => Home(),
-          'meditation': (BuildContext context) => TimerRun(),
-        },
-        onUnknownRoute: (RouteSettings settings) {
-          return MaterialPageRoute(
-              builder: (BuildContext context) => TimerRun());
-        },
       ),
+      initialRoute: 'news',
+      routes: {
+        'news': (BuildContext context) => Home(),
+        'meditation': (BuildContext context) => TimerRun(),
+      },
+      onUnknownRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: (BuildContext context) => TimerRun());
+      },
     );
   }
 }

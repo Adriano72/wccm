@@ -51,27 +51,24 @@ class _TimerSettingsState extends State<TimerSettings> {
   Future<Duration> _getStoredMedTime() async {
     print('MEDITATION TIME GOTTEN!!!!!');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, int> storedTime = {};
     int storedMedTimeHour = (prefs.getInt('timerPresetHours'));
     int storedMedTimeMinutes = (prefs.getInt('timerPresetsMinutes'));
-    storedTime = {'hours': storedMedTimeHour, 'minutes': storedMedTimeMinutes};
-//    setState(() {
-//      _medDuration =
-//          Duration(hours: storedMedTimeHour, minutes: storedMedTimeMinutes);
-//    });
     print(
         'STORED MED TIME IS ${_medDuration.inHours} HOURS AND ${_medDuration.inMinutes} MINUTES.');
-    return Duration(hours: storedMedTimeHour, minutes: storedMedTimeMinutes);
+
+    return Duration(
+        hours: storedMedTimeHour ?? 0, minutes: storedMedTimeMinutes ?? 20);
     ;
   }
 
   @override
   Widget build(BuildContext context) {
-    print("*******************");
     if (!_updatedFromPreferences) {
       // This is what we show while we're loading
+      print('BUILD EMPTY');
       return new Container();
     }
+    print('BUILD TREE');
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -97,7 +94,6 @@ class _TimerSettingsState extends State<TimerSettings> {
               duration: _medDuration,
               snapToMins: 1.0,
               onChange: (val) {
-                print('on change****************');
                 try {
                   if (val != null) {
                     this.setState(
