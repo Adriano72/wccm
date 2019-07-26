@@ -69,70 +69,76 @@ class _TimerSettingsState extends State<TimerSettings> {
       return new Container();
     }
     print('BUILD TREE');
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          /*Image.asset('assets/images/bowl.png',
-              width: MediaQuery.of(context).size.width * 0.3),*/
+    return Scaffold(
+      backgroundColor: Color(0xFFd3d3d3),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            /*Image.asset('assets/images/bowl.png',
+                width: MediaQuery.of(context).size.width * 0.3),*/
 
-          SafeArea(
-            child: Text(
-              'Session time',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                height: 1.3,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+            SafeArea(
+              child: Text(
+                'Session time',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  height: 1.3,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          Flexible(
-            child: DurationPicker(
-              width: 240,
-              duration: _medDuration,
-              snapToMins: 1.0,
-              onChange: (val) {
-                try {
-                  if (val != null) {
-                    this.setState(
-                      () {
-                        _medDuration = val;
-                        medHours = _medDuration.inHours;
-                        medMinutes = _medDuration.inMinutes.remainder(60);
+            Flexible(
+              child: DurationPicker(
+                width: 240,
+                duration: _medDuration,
+                snapToMins: 1.0,
+                onChange: (val) {
+                  try {
+                    if (val != null) {
+                      this.setState(
+                        () {
+                          _medDuration = val;
+                          medHours = _medDuration.inHours;
+                          medMinutes = _medDuration.inMinutes.remainder(60);
 
-                        print("Med hours: $medHours");
-                        print("Med minutes: $medMinutes");
-                      },
-                    );
-                  } else {
-                    this.setState(
-                      () => _medDuration = Duration(minutes: 1),
-                    );
+                          print("Med hours: $medHours");
+                          print("Med minutes: $medMinutes");
+                        },
+                      );
+                    } else {
+                      this.setState(
+                        () => _medDuration = Duration(minutes: 1),
+                      );
+                    }
+                    _storeMedTime(_medDuration.inHours, _medDuration.inMinutes);
+                  } catch (e) {
+                    print(e);
                   }
-                  _storeMedTime(_medDuration.inHours, _medDuration.inMinutes);
-                } catch (e) {
-                  print(e);
-                }
-              },
+                },
+              ),
             ),
-          ),
-          Flexible(
-            child: RaisedButton(
-              color: Colors.lightBlueAccent,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TimerRun(
-                              meditationTime: _medDuration,
-                            )));
-              },
-              child: Text("Start"),
+            Flexible(
+              child: RaisedButton(
+                color: Colors.teal,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimerRun(
+                                meditationTime: _medDuration,
+                              )));
+                },
+                child: Text(
+                  "Start",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

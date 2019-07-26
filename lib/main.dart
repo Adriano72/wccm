@@ -27,9 +27,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       //debugShowMaterialGrid: true,
       theme: ThemeData(
+        backgroundColor: Colors.blueGrey,
         brightness: Brightness.light,
         primaryColor: Colors.blueGrey,
-        accentColor: Colors.cyan[600],
+        accentColor: Colors.teal,
         fontFamily: 'Montserrat',
 
         // Define the default TextTheme. Use this to specify the default

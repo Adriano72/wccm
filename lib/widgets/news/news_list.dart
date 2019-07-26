@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:http/http.dart' show get;
 import '../../models/news_model.dart';
+import 'news_detail.dart';
 import 'dart:convert';
+import 'package:wccm/constants.dart';
 
 class ListPage extends StatefulWidget {
   @override
@@ -53,17 +54,36 @@ class _ListPage extends State<ListPage> {
   }
 
   Widget _buildContent() {
-    return ListView.builder(
-      itemCount: allTheNews.length,
-      itemBuilder: (BuildContext content, int index) {
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage("${allTheNews[index].imageUrl}"),
-          ),
-          title: Text(allTheNews[index].title),
-          subtitle: Text(allTheNews[index].blurb),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Color(0xFFd3d3d3),
+      body: ListView.builder(
+        itemCount: allTheNews.length,
+        itemBuilder: (BuildContext content, int index) {
+          return ListTile(
+            dense: true,
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage("${allTheNews[index].imageUrl}"),
+            ),
+            title: Text(
+              allTheNews[index].title,
+              style: kListTitle,
+            ),
+            subtitle: Text(
+              allTheNews[index].blurb,
+              overflow: TextOverflow.ellipsis,
+              style: kListBlurb,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewsDetail(allTheNews[index]),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

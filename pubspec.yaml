@@ -18,6 +18,8 @@ dependencies:
   fluttertoast: ^3.1.0
   wakelock: ^0.1.2+5
   percent_indicator: ^2.1.1
+  date_format: ^1.0.6
+  url_launcher: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -31,4 +33,12 @@ flutter:
   assets:
   - assets/images/
   - assets/sounds/
+
+  fonts:
+    - family: Montserrat
+      fonts:
+      - asset: fonts/Montserrat-Bold.ttf
+      - asset: fonts/Montserrat-Regular.ttf
+      - asset: fonts/Montserrat-SemiBold.ttf
+
 

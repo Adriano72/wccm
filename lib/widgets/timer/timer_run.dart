@@ -5,6 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:wccm/constants.dart';
 
 class TimerRun extends StatefulWidget {
   final Duration meditationTime;
@@ -46,7 +47,7 @@ class _TimerRunState extends State<TimerRun> {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.CENTER,
         timeInSecForIos: seconds,
         backgroundColor: Colors.black87,
         textColor: Colors.white,
@@ -121,6 +122,7 @@ class _TimerRunState extends State<TimerRun> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFd3d3d3),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -144,11 +146,11 @@ class _TimerRunState extends State<TimerRun> {
                 lineWidth: 5.0,
                 percent: timePercent,
                 center: new Text(formatTime(medDuration)),
-                progressColor: Colors.green,
+                progressColor: Colors.teal,
               ),
               Flexible(
                 child: RaisedButton(
-                  color: Colors.lightBlueAccent,
+                  color: Colors.teal,
                   onPressed: () {
                     if (isPreparationTime) {
                       Wakelock.toggle(on: false);
@@ -164,7 +166,15 @@ class _TimerRunState extends State<TimerRun> {
                       Navigator.pop(context);
                     }
                   },
-                  child: sessionCompleted ? Text("Back") : Text("Stop"),
+                  child: sessionCompleted
+                      ? Text(
+                          "Back",
+                          style: kButtonTextStyle,
+                        )
+                      : Text(
+                          "Stop",
+                          style: kButtonTextStyle,
+                        ),
                 ),
               ),
             ],
