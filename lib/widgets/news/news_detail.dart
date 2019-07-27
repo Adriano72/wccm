@@ -48,14 +48,20 @@ class NewsDetail extends StatelessWidget {
   Padding _createLinkBox() {
     Padding linkBox = Padding(
       padding: EdgeInsets.all(10),
-      child: FlatButton(
-        child: Text(
-          news.link,
-          style: kNewsLinkStyle,
+      child: Center(
+        child: Row(
+          children: <Widget>[
+            GestureDetector(
+              child: Text(
+                (news.link == null) ? '' : 'More info here',
+                style: kNewsLinkStyle,
+              ),
+              onTap: () {
+                if (news.link != null) _launchURL('${news.link}');
+              },
+            ),
+          ],
         ),
-        onPressed: () {
-          _launchURL('http://${news.link}');
-        },
       ),
     );
 
@@ -69,12 +75,12 @@ class NewsDetail extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
-          backgroundColor: Color(0xFFd3d3d3),
+          backgroundColor: kBackgroundColor,
           iconTheme: IconThemeData(color: Colors.blueGrey),
           //title: Text('WCCM'),
         ),
       ),
-      backgroundColor: Color(0xFFd3d3d3),
+      backgroundColor: kBackgroundColor,
       body: SafeArea(
         child: ListView(
           children: <Widget>[

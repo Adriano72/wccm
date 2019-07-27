@@ -3,6 +3,7 @@ import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:wccm/widgets/timer/timer_run.dart';
+import 'package:wccm/constants.dart';
 
 class TimerSettings extends StatefulWidget {
   @override
@@ -45,16 +46,12 @@ class _TimerSettingsState extends State<TimerSettings> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('timerPresetHours', hours);
     await prefs.setInt('timerPresetsMinutes', minutes.remainder(60));
-    print('MEDITATION TIME STORED!!!!!');
   }
 
   Future<Duration> _getStoredMedTime() async {
-    print('MEDITATION TIME GOTTEN!!!!!');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int storedMedTimeHour = (prefs.getInt('timerPresetHours'));
     int storedMedTimeMinutes = (prefs.getInt('timerPresetsMinutes'));
-    print(
-        'STORED MED TIME IS ${_medDuration.inHours} HOURS AND ${_medDuration.inMinutes} MINUTES.');
 
     return Duration(
         hours: storedMedTimeHour ?? 0, minutes: storedMedTimeMinutes ?? 20);
@@ -64,13 +61,10 @@ class _TimerSettingsState extends State<TimerSettings> {
   @override
   Widget build(BuildContext context) {
     if (!_updatedFromPreferences) {
-      // This is what we show while we're loading
-      print('BUILD EMPTY');
       return new Container();
     }
-    print('BUILD TREE');
     return Scaffold(
-      backgroundColor: Color(0xFFd3d3d3),
+      backgroundColor: kBackgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -103,9 +97,6 @@ class _TimerSettingsState extends State<TimerSettings> {
                           _medDuration = val;
                           medHours = _medDuration.inHours;
                           medMinutes = _medDuration.inMinutes.remainder(60);
-
-                          print("Med hours: $medHours");
-                          print("Med minutes: $medMinutes");
                         },
                       );
                     } else {

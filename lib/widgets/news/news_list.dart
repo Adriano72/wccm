@@ -55,7 +55,7 @@ class _ListPage extends State<ListPage> {
 
   Widget _buildContent() {
     return Scaffold(
-      backgroundColor: Color(0xFFd3d3d3),
+      backgroundColor: kBackgroundColor,
       body: ListView.builder(
         itemCount: allTheNews.length,
         itemBuilder: (BuildContext content, int index) {

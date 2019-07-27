@@ -3,7 +3,6 @@ import 'package:wakelock/wakelock.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:wccm/constants.dart';
 
@@ -22,6 +21,8 @@ class _TimerRunState extends State<TimerRun> {
   bool isPreparationTime = true;
   bool sessionCompleted = false;
   double timePercent = 1.0;
+  double preparationNoticeVisibility = 1.0;
+  String beginEndSessionNotification = 'Session starting in a few seconds...';
   Timer timer;
   dynamic playerState;
 
@@ -40,21 +41,8 @@ class _TimerRunState extends State<TimerRun> {
         Wakelock.toggle(on: false);
       }
     });
-    showToast('Session will start in 10 seconds...', 3);
-  }
-
-  void showToast(String message, int seconds) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIos: seconds,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0);
-
-    super.initState();
     startTimer();
+    super.initState();
   }
 
   String formatTime(Duration rawDuration) {
@@ -66,12 +54,16 @@ class _TimerRunState extends State<TimerRun> {
   }
 
   void startTimer() {
-    Fluttertoast.cancel();
     Wakelock.toggle(on: true);
     sessionCompleted = false;
     const oneSec = const Duration(seconds: 1);
     Future.delayed(const Duration(seconds: 10), () {
       isPreparationTime = false;
+      if (mounted)
+        setState(() {
+          preparationNoticeVisibility = 0.0;
+          beginEndSessionNotification = 'Session completed!';
+        });
       if (mounted) player.play('LaurenceBowlEnd.mp3');
       timer = Timer.periodic(
         oneSec,
@@ -85,7 +77,7 @@ class _TimerRunState extends State<TimerRun> {
                   timer.cancel();
                   timerStarted = false;
                   sessionCompleted = true;
-                  showToast('Session completed', 3);
+                  preparationNoticeVisibility = 1.0;
                 } else {
                   medDuration = medDuration - oneSec;
                   updatePercentageIndicator();
@@ -100,7 +92,6 @@ class _TimerRunState extends State<TimerRun> {
 
   @override
   void dispose() {
-    Fluttertoast.cancel();
     advancedPlayer.stop();
     super.dispose();
   }
@@ -122,7 +113,7 @@ class _TimerRunState extends State<TimerRun> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFd3d3d3),
+      backgroundColor: kBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -148,6 +139,10 @@ class _TimerRunState extends State<TimerRun> {
                 center: new Text(formatTime(medDuration)),
                 progressColor: Colors.teal,
               ),
+              Opacity(
+                opacity: preparationNoticeVisibility,
+                child: Text(beginEndSessionNotification),
+              ),
               Flexible(
                 child: RaisedButton(
                   color: Colors.teal,
@@ -161,7 +156,6 @@ class _TimerRunState extends State<TimerRun> {
                     if (timerStarted || sessionCompleted) {
                       Wakelock.toggle(on: false);
                       timer.cancel();
-                      Fluttertoast.cancel();
                       advancedPlayer.stop();
                       Navigator.pop(context);
                     }

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'widgets/timer/timer_run.dart';
+import 'package:splashscreen/splashscreen.dart';
+import 'constants.dart';
 //import 'package:flutter/rendering.dart';
 // Import flutter helper library
 
-//import 'widgets/image_list.dart';
-
-import './home.dart';
+import 'home.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
   //debugPaintBaselinesEnabled = true;
   //debugPaintPointersEnabled = true;
-  runApp(MyApp());
+  runApp(MaterialApp(
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -24,10 +26,37 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    return new SplashScreen(
+      seconds: 3,
+      navigateAfterSeconds: AfterSplash(),
+      title: Text(
+        'The World Community for Christian Meditation',
+        style: kSplashTextStyle,
+      ),
+      image: Image.asset(
+        'assets/images/logo.png',
+        height: 130.0,
+      ),
+      gradientBackground: LinearGradient(
+          colors: [Colors.blueGrey, Colors.teal],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight),
+      backgroundColor: Colors.white,
+      styleTextUnderTheLoader: TextStyle(),
+      photoSize: 100.0,
+      onClick: () => print("Flutter Egypt"),
+      loaderColor: Colors.white70,
+    );
+  }
+}
+
+class AfterSplash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       //debugShowMaterialGrid: true,
       theme: ThemeData(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: kBackgroundColor,
         brightness: Brightness.light,
         primaryColor: Colors.blueGrey,
         accentColor: Colors.teal,
@@ -41,14 +70,7 @@ class _MyAppState extends State<MyApp> {
           body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),
-      initialRoute: 'news',
-      routes: {
-        'news': (BuildContext context) => Home(),
-        'meditation': (BuildContext context) => TimerRun(),
-      },
-      onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(builder: (BuildContext context) => TimerRun());
-      },
+      home: Home(),
     );
   }
 }

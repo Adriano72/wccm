@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
+const kSplashTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 14.0,
+  fontFamily: 'Montserrat',
+);
+
 const TextStyle kListTitle = TextStyle(
-  color: Colors.black,
+  color: Colors.blueGrey,
   fontSize: 14,
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w800,
 );
 
 const TextStyle kListBlurb = TextStyle(
@@ -17,14 +23,16 @@ const TextStyle kButtonTextStyle = TextStyle(
 );
 
 const TextStyle kNewsDetailTitleStyle = TextStyle(
-  color: Colors.black87,
+  color: Colors.blueGrey,
   fontWeight: FontWeight.w800,
   fontSize: 20,
   height: 1.2,
 );
 
 const TextStyle kNewsLinkStyle = TextStyle(
-  color: Colors.blue,
+  color: Colors.teal,
   fontWeight: FontWeight.w800,
   fontSize: 14,
 );
+
+const kBackgroundColor = Color(0xFFFCFCFC);
