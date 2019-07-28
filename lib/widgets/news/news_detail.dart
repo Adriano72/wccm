@@ -77,7 +77,6 @@ class NewsDetail extends StatelessWidget {
         child: AppBar(
           backgroundColor: kBackgroundColor,
           iconTheme: IconThemeData(color: Colors.blueGrey),
-          //title: Text('WCCM'),
         ),
       ),
       backgroundColor: kBackgroundColor,

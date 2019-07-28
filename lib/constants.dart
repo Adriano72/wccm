@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const kDrawerIconsColor = Colors.blueGrey;
+
 const kSplashTextStyle = TextStyle(
   color: Colors.white,
   fontSize: 14.0,
@@ -9,7 +11,7 @@ const kSplashTextStyle = TextStyle(
 const TextStyle kListTitle = TextStyle(
   color: Colors.blueGrey,
   fontSize: 14,
-  fontWeight: FontWeight.w800,
+  fontWeight: FontWeight.w600,
 );
 
 const TextStyle kListBlurb = TextStyle(
