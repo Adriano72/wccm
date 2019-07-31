@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'package:wccm/widgets/timer/timer_run.dart';
+import 'package:wccm/pages/timer/timer_run.dart';
 import 'package:wccm/constants.dart';
 
 class TimerSettings extends StatefulWidget {

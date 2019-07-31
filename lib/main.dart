@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'widgets/timer/timer_run.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'constants.dart';
+import 'home.dart';
+
 //import 'package:flutter/rendering.dart';
 // Import flutter helper library
-
-import 'home.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
   //debugPaintBaselinesEnabled = true;
   //debugPaintPointersEnabled = true;
+
   runApp(MaterialApp(
     home: MyApp(),
   ));

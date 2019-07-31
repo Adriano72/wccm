@@ -37,4 +37,25 @@ const TextStyle kNewsLinkStyle = TextStyle(
   fontSize: 14,
 );
 
-const kBackgroundColor = Color(0xFFFCFCFC);
+const Color kBackgroundColor = Color(0xFFFCFCFC);
+
+const TextStyle kResourceCardTitleStyle = TextStyle(
+  color: Colors.teal,
+  fontWeight: FontWeight.w500,
+  fontSize: 22,
+);
+
+const TextStyle kResourceCartSubTitleStyle = TextStyle(
+  color: Colors.blueGrey,
+  fontWeight: FontWeight.w300,
+  fontSize: 13,
+);
+const String kDailyWisdomURL =
+    'http://wccm.org/sites/default/files/mobilefeedspages/2019/DailyWisdomArchive.html';
+const String kWeeklyReadingsURL =
+    'http://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyReadingsArchive.html';
+const String kWeeklyTeachingsURL =
+    'http://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyTeachingsArchive.html';
+const String kMonthlyNewsURL =
+    'http://wccm.org/sites/default/files/mobilefeedspages/2019/MonthlyNewsArchive.html';
+const String kOnlineGroupsURL = 'https://www.onlinemeditationwccm.org/';

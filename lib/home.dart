@@ -1,10 +1,12 @@
 import "package:flutter/material.dart";
-import "package:wccm/widgets/news/news_list.dart";
+import "package:wccm/pages/news/news_list.dart";
 import 'package:flutter/services.dart';
-import 'widgets/timer/timer_settings.dart';
-import 'package:wccm/widgets/prayers.dart';
+import 'pages/timer/timer_settings.dart';
+import 'package:wccm/pages/resources.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'prayers.dart';
 import 'constants.dart';
 
 class Home extends StatefulWidget {
@@ -17,7 +19,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   List allNews;
-
   List<Widget> _children;
 
   @override
@@ -25,10 +26,11 @@ class _HomeState extends State<Home> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+
     _children = [
-      ListPage(),
+      NewsListPage(),
       TimerSettings(),
-      Prayers(),
+      Resources(),
     ];
     super.initState();
   }
@@ -73,7 +75,7 @@ class _HomeState extends State<Home> {
                     Icons.web,
                     color: kDrawerIconsColor,
                   ),
-                  title: Text('WCCM Website'),
+                  title: Text('WCCM'),
                   onTap: () {
                     _launchURL('https://wccm.org');
                   },
@@ -83,7 +85,7 @@ class _HomeState extends State<Home> {
                     Icons.home,
                     color: kDrawerIconsColor,
                   ),
-                  title: Text('Bonnevaux, our Home'),
+                  title: Text('Bonnevaux'),
                   onTap: () {
                     _launchURL('https://bonnevauxwccm.org/');
                   },
@@ -134,9 +136,9 @@ class _HomeState extends State<Home> {
                     FontAwesomeIcons.youtube,
                     color: kDrawerIconsColor,
                   ),
-                  title: Text('Youtube'),
+                  title: Text('Video and other media'),
                   onTap: () {
-                    _launchURL('http://www.youtube.com/user/meditatiowccm');
+                    _launchURL('https://wccm.org/media-page/');
                   },
                 ),
                 ListTile(
@@ -162,15 +164,25 @@ class _HomeState extends State<Home> {
                 ),
                 ListTile(
                   leading: Icon(
-                    FontAwesomeIcons.soundcloud,
+                    FontAwesomeIcons.instagram,
                     color: kDrawerIconsColor,
                   ),
-                  title: Text('SoundCloud'),
+                  title: Text('Instagram'),
                   onTap: () {
-                    _launchURL('https://soundcloud.com/wccm/');
+                    _launchURL('https://www.instagram.com/wccm_meditatio/');
                   },
                 ),
                 Divider(),
+                ListTile(
+                  leading: Icon(
+                    Icons.alternate_email,
+                    color: kDrawerIconsColor,
+                  ),
+                  title: Text('Subscribe'),
+                  onTap: () {
+                    _launchURL('http://eepurl.com/tc5vH');
+                  },
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.email,
@@ -181,6 +193,9 @@ class _HomeState extends State<Home> {
                     _launchURL('mailto://adriano@wccm.org');
                   },
                 ),
+                SizedBox(
+                  height: 40.0,
+                ),
               ],
             ),
           ),
@@ -188,17 +203,6 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-//
-//  - WCCM Website
-//  - Bonnevaux, our Home (please suggest changes in the text if you feel so)
-//  - The School of Meditation
-//  - Meditatio Centre (website)
-//  - Bookstore (for Mediomedia website)
-//  - Oblates Website
-//  - YouTube (our channel)
-//  - Facebook (our page) https://www.facebook.com/christian.meditation.wccm
-//  - Podcast (https://wccm-podcasts.simplecast.com/)
-//  - Flickr (just wondering...)
 
   @override
   Widget build(BuildContext context) {
@@ -206,6 +210,21 @@ class _HomeState extends State<Home> {
       drawer: _buildSideDrawer(context),
       appBar: AppBar(
         title: Text('WCCM'),
+        actions: <Widget>[
+          Visibility(
+            visible: _currentIndex == 1,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Prayers()));
+                },
+                child: Icon(FontAwesomeIcons.prayingHands),
+              ),
+            ),
+          )
+        ],
       ),
       body: _children.elementAt(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
@@ -250,18 +269,6 @@ class _HomeState extends State<Home> {
   }
 
   void onTabTapped(int index) {
-//    if (_currentIndex == 1) {
-//      SystemChrome.setPreferredOrientations([
-//        DeviceOrientation.portraitUp,
-//      ]);
-//    } else {
-//      SystemChrome.setPreferredOrientations([
-//        DeviceOrientation.landscapeRight,
-//        DeviceOrientation.landscapeLeft,
-//        DeviceOrientation.portraitUp,
-//        DeviceOrientation.portraitDown,
-//      ]);
-//    }
     setState(() {
       _currentIndex = index;
       print('CURRENT INDEX $_currentIndex');
