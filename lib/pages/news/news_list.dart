@@ -19,17 +19,27 @@ class _ListPage extends State<NewsListPage> {
       'https://cdn.contentful.com/spaces/4ptr806dzbcu/environments/master/entries?access_token=2e6a171e4a838eb9d8050a26f653c02c11124f24643eab62ff4d390cc914d9b8&order=-sys.createdAt&include=1';
   List<NewsModel> allTheNews = [];
 
-  void checkConn() async {
+  bool isConnected = false;
+
+  Future checkConn() async {
     bool result = await DataConnectionChecker().hasConnection;
     if (result == true) {
       print('YAY! Free cute dog pics!');
+      setState(() {
+        isConnected = true;
+      });
+      fetchAllNews();
     } else {
       print('No internet :( Reason:');
+      isConnected = false;
+
       print(DataConnectionChecker().lastTryResults);
     }
   }
 
   void fetchAllNews() async {
+    print('_______IS CONNECTED: $isConnected');
+
     var response = await get(apiURL);
 //    print('RESPONSE ${json.decode(response.body)}');
     var decodedResponse = json.decode(response.body);
@@ -54,7 +64,6 @@ class _ListPage extends State<NewsListPage> {
   void initState() {
     super.initState();
     checkConn();
-    fetchAllNews();
   }
 
   @override
@@ -63,7 +72,7 @@ class _ListPage extends State<NewsListPage> {
       backgroundColor: kBackgroundColor,
       body: Column(
         children: <Widget>[
-          Text('NETWORK IS'),
+          Text('CAROUSEL HERE'),
           Expanded(
             child: ListView.builder(
               itemCount: allTheNews.length,

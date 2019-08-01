@@ -24,12 +24,13 @@ class _TimerRunState extends State<TimerRun> {
   double preparationNoticeVisibility = 1.0;
   String beginEndSessionNotification = 'Session starting in a few seconds...';
   Timer timer;
+  String bellSound = 'tibetan-bowl.mp3';
   dynamic playerState;
 
   @override
   void initState() {
     medDuration = widget.meditationTime;
-    player.load('LaurenceBowlEnd.mp3');
+    player.load(bellSound);
     // Checks if the AudioPlayer is playing. States available are AudioPlayerState.PLAYING (STOPPED or COMPLETED)
     // and disable screen lock is audio is STOPPED or COMPLETED and timerStarted is false (timer is not running)
     advancedPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
@@ -64,7 +65,7 @@ class _TimerRunState extends State<TimerRun> {
           preparationNoticeVisibility = 0.0;
           beginEndSessionNotification = 'Session completed!';
         });
-      if (mounted) player.play('LaurenceBowlEnd.mp3');
+      if (mounted) player.play(bellSound);
       timer = Timer.periodic(
         oneSec,
         (timer) {
@@ -73,7 +74,7 @@ class _TimerRunState extends State<TimerRun> {
             setState(
               () {
                 if (medDuration.inSeconds < 1) {
-                  player.play('LaurenceBowlEnd.mp3');
+                  player.play(bellSound);
                   timer.cancel();
                   timerStarted = false;
                   sessionCompleted = true;
