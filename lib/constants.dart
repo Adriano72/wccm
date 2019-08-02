@@ -51,11 +51,11 @@ const TextStyle kResourceCartSubTitleStyle = TextStyle(
   fontSize: 13,
 );
 const String kDailyWisdomURL =
-    'http://wccm.org/sites/default/files/mobilefeedspages/2019/DailyWisdomArchive.html';
+    'https://wccm.org/sites/default/files/mobilefeedspages/2019/DailyWisdomArchive.html';
 const String kWeeklyReadingsURL =
-    'http://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyReadingsArchive.html';
+    'https://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyReadingsArchive.html';
 const String kWeeklyTeachingsURL =
-    'http://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyTeachingsArchive.html';
+    'https://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyTeachingsArchive.html';
 const String kMonthlyNewsURL =
-    'http://wccm.org/sites/default/files/mobilefeedspages/2019/MonthlyNewsArchive.html';
+    'https://wccm.org/sites/default/files/mobilefeedspages/2019/MonthlyNewsArchive.html';
 const String kOnlineGroupsURL = 'https://www.onlinemeditationwccm.org/';

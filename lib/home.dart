@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
     ]);
 
     _children = [
-      NewsListPage(),
+      NewsListPage(goToTimerTab),
       TimerSettings(),
       Resources(),
     ];
@@ -127,7 +127,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text('Oblates website'),
                   onTap: () {
-                    _launchURL('http://oblates.wccm.org/v2019');
+                    _launchURL('http://oblates.wccm.org/');
                   },
                 ),
                 Divider(),
@@ -272,6 +272,12 @@ class _HomeState extends State<Home> {
     setState(() {
       _currentIndex = index;
       print('CURRENT INDEX $_currentIndex');
+    });
+  }
+
+  void goToTimerTab() {
+    setState(() {
+      _currentIndex = 1;
     });
   }
 }
