@@ -186,52 +186,17 @@ class _ListPage extends State<NewsListPage> {
                     ),
                   );
                 },
-              ).toList()
-//            items: highlights.map((item) {
-//              return Builder(
-//                builder: (BuildContext context) {
-//                  return GestureDetector(
-//                    onTap: () {
-//                      print("TAPPED: ______ ${item.title}");
-//                    },
-//                    child: Stack(children: <Widget>[
-//                      FittedBox(
-//                        child: Image.network(item.imageUrl),
-//                        fit: BoxFit.cover,
-//                      ),
-//                      Positioned(
-//                        bottom: 15,
-//                        left: 15,
-//                        child: Text(
-//                          item.title,
-//                          style: TextStyle(
-//                            shadows: [
-//                              Shadow(
-//                                blurRadius: 10.0,
-//                                color: Colors.black,
-//                                offset: Offset(2.0, 2.0),
-//                              ),
-//                            ],
-//                            fontSize: 24,
-//                            fontWeight: FontWeight.w700,
-//                            color: Colors.white70,
-//                          ),
-//                        ),
-//                      )
-//                    ]),
-//                  );
-//                },
-//              );
-//            }).toList(),
-              ),
+              ).toList()),
           SizedBox(
-            height: 20.0,
+            height: 10.0,
           ),
           Expanded(
             child: ListView.builder(
               itemCount: allTheNews.length,
               itemBuilder: (BuildContext content, int index) {
                 return ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
                   dense: true,
                   leading: CircleAvatar(
                     backgroundImage:
