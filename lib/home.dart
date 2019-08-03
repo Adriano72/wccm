@@ -5,7 +5,6 @@ import 'pages/timer/timer_settings.dart';
 import 'package:wccm/pages/resources.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'prayers.dart';
 import 'constants.dart';
 

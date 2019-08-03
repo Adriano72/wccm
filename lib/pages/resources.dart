@@ -49,10 +49,14 @@ class Resources extends StatelessWidget {
 }
 
 _launchURL(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+  try {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  } catch (error) {
+    print('No internet!! cause of: $error');
   }
 }
 
