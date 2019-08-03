@@ -22,7 +22,7 @@ class _TimerRunState extends State<TimerRun> {
   bool sessionCompleted = false;
   double timePercent = 1.0;
   double preparationNoticeVisibility = 1.0;
-  String beginEndSessionNotification = 'Session starting in five seconds...';
+  String beginEndSessionNotification = 'Session starting in a few seconds...';
   Timer timer;
   String bellSound = 'tibetan-bowl.mp3';
   dynamic playerState;
@@ -58,7 +58,7 @@ class _TimerRunState extends State<TimerRun> {
     Wakelock.toggle(on: true);
     sessionCompleted = false;
     const oneSec = const Duration(seconds: 1);
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 7), () {
       isPreparationTime = false;
       if (mounted)
         setState(() {
