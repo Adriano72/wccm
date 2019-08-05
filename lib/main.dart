@@ -12,6 +12,7 @@ void main() {
   //debugPaintPointersEnabled = true;
 
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: MyApp(),
   ));
 }

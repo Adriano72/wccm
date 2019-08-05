@@ -174,6 +174,17 @@ class _HomeState extends State<Home> {
                 Divider(),
                 ListTile(
                   leading: Icon(
+                    FontAwesomeIcons.handHoldingHeart,
+                    color: kDrawerIconsColor,
+                  ),
+                  title: Text('Donate'),
+                  onTap: () {
+                    _launchURL(
+                        'https://io-wccm.org/civicrm/contribute/transact?reset=1&id=11');
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
                     Icons.alternate_email,
                     color: kDrawerIconsColor,
                   ),
