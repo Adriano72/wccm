@@ -2,7 +2,7 @@ name: wccm
 description: A new Flutter project.
 
 
-version: 1.1.0+3
+version: 1.2.0+4
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -16,7 +16,7 @@ dependencies:
   audioplayers: ^0.13.0
   cupertino_icons: ^0.1.2
   fluttertoast: ^3.1.0
-  wakelock: ^0.1.2+5
+  wakelock: ^0.1.2+8
   percent_indicator: ^2.1.1
   date_format: ^1.0.6
   url_launcher: ^5.1.0

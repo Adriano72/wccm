@@ -36,11 +36,6 @@ class _TimerRunState extends State<TimerRun> {
     advancedPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
       print('Current player state: $s');
       if (mounted) setState(() => playerState = s);
-      if (!timerStarted &&
-          (playerState == AudioPlayerState.COMPLETED ||
-              playerState == AudioPlayerState.STOPPED)) {
-        Wakelock.toggle(on: false);
-      }
     });
     startTimer();
     super.initState();
@@ -55,7 +50,7 @@ class _TimerRunState extends State<TimerRun> {
   }
 
   void startTimer() {
-    Wakelock.toggle(on: true);
+    Wakelock.enable();
     sessionCompleted = false;
     const oneSec = const Duration(seconds: 1);
     Future.delayed(const Duration(seconds: 7), () {
@@ -93,6 +88,8 @@ class _TimerRunState extends State<TimerRun> {
 
   @override
   void dispose() {
+    print("DISPOSE*********");
+    Wakelock.disable();
     advancedPlayer.stop();
     super.dispose();
   }
