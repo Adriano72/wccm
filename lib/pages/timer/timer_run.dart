@@ -34,8 +34,14 @@ class _TimerRunState extends State<TimerRun> {
     // Checks if the AudioPlayer is playing. States available are AudioPlayerState.PLAYING (STOPPED or COMPLETED)
     // and disable screen lock is audio is STOPPED or COMPLETED and timerStarted is false (timer is not running)
     advancedPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
+      // TODO: Far si che a fine meditazione si  disabiliti il wakelock
       print('Current player state: $s');
       if (mounted) setState(() => playerState = s);
+      if (!timerStarted &&
+          (playerState == AudioPlayerState.COMPLETED ||
+              playerState == AudioPlayerState.STOPPED)) {
+        //Wakelock.disable();
+      }
     });
     startTimer();
     super.initState();
