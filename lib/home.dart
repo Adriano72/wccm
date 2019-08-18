@@ -42,6 +42,31 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Text _appBarTitleSwitcher() {
+    switch (_currentIndex) {
+      case 0:
+        {
+          return Text('WCCM News');
+        }
+        break;
+      case 1:
+        {
+          return Text('Meditation Timer');
+        }
+        break;
+      case 2:
+        {
+          return Text('Resources for your journey');
+        }
+        break;
+      default:
+        {
+          return Text('WCCM');
+        }
+        break;
+    }
+  }
+
   Widget _buildSideDrawer(BuildContext context) {
     // This is the Drawer widget
     return Drawer(
@@ -219,7 +244,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       drawer: _buildSideDrawer(context),
       appBar: AppBar(
-        title: Text('WCCM'),
+        title: _appBarTitleSwitcher(),
         actions: <Widget>[
           Visibility(
             visible: _currentIndex == 1,
@@ -247,11 +272,16 @@ class _HomeState extends State<Home> {
             icon: Icon(
               Icons.radio,
             ),
-            activeIcon: new Icon(
+            activeIcon: Icon(
               Icons.radio,
-              color: Colors.teal,
+              color: Colors.white70,
             ),
-            title: Text('News'),
+            title: Text(
+              'News',
+              style: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -259,9 +289,14 @@ class _HomeState extends State<Home> {
             ),
             activeIcon: Icon(
               Icons.timer,
-              color: Colors.teal,
+              color: Colors.white70,
             ),
-            title: Text('Timer'),
+            title: Text(
+              'Timer',
+              style: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -269,9 +304,14 @@ class _HomeState extends State<Home> {
             ),
             activeIcon: Icon(
               Icons.local_library,
-              color: Colors.teal,
+              color: Colors.white70,
             ),
-            title: Text('Resources'),
+            title: Text(
+              'Resources',
+              style: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
           )
         ],
       ),

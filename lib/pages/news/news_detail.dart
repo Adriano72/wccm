@@ -26,7 +26,7 @@ class NewsDetail extends StatelessWidget {
           Icon(
             Icons.today,
             size: 20.0,
-            color: Colors.blueGrey,
+            color: Colors.white70,
           ),
           SizedBox(
             width: 5.0,
@@ -34,6 +34,7 @@ class NewsDetail extends StatelessWidget {
           Text(
             formatDate(parsedDate, [d, ' ', M, ' ', yyyy]),
             style: TextStyle(
+              color: Colors.white70,
               height: 1.2,
               fontSize: 12,
             ),
@@ -76,7 +77,7 @@ class NewsDetail extends StatelessWidget {
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
           backgroundColor: kBackgroundColor,
-          iconTheme: IconThemeData(color: Colors.blueGrey),
+          iconTheme: IconThemeData(color: Colors.white70),
         ),
       ),
       backgroundColor: kBackgroundColor,

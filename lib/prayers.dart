@@ -11,28 +11,30 @@ class Prayers extends StatelessWidget {
         child: AppBar(
           title: Text(
             'Prayers for meditation',
-            style: TextStyle(color: Colors.blueGrey),
+            style: TextStyle(color: Colors.white70),
           ),
           backgroundColor: kBackgroundColor,
-          iconTheme: IconThemeData(color: Colors.blueGrey),
+          iconTheme: IconThemeData(color: Colors.white70),
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          SizedBox(
-            height: 10.0,
-          ),
-          _createPrayerCard(
-              'assets/images/johnMainPic.png',
-              'Opening Prayer',
-              'By John Main OSB',
-              "Heavenly Father, open our hearts to the silent presence of the spirit of your Son. Lead us into that mysterious silence where your love is revealed to all who call, 'Maranatha…Come, Lord Jesus'."),
-          _createPrayerCard(
-              'assets/images/laurencePic.png',
-              'Closing Prayer',
-              'By Laurence Freeman OSB',
-              'May this group be a true spiritual home for the seeker, a friend for the lonely, a guide for the confused. May those who pray here be strengthened by the Holy Spirit to serve all who come and to receive them as Christ, Himself. In the silence of this room may all the suffering, violence and confusion of the world encounter the power that will console, renew and uplift the human spirit. May this silence be a power to open the hearts of men and women to the vision of God, and so to each other, in love and peace, justice and human dignity. May the beauty of Divine Life fill this group and the hearts of all who pray here with joyful hope. May all who come here weighed down by the problems of humanity, leave, giving thanks for the wonder of human life. We make this prayer through Christ our Lord.'),
-        ],
+      body: SafeArea(
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 10.0,
+            ),
+            _createPrayerCard(
+                'assets/images/johnMainPic.png',
+                'Opening Prayer',
+                'By John Main OSB',
+                "Heavenly Father, open our hearts to the silent presence of the spirit of your Son. Lead us into that mysterious silence where your love is revealed to all who call, 'Maranatha…Come, Lord Jesus'."),
+            _createPrayerCard(
+                'assets/images/laurencePic.png',
+                'Closing Prayer',
+                'By Laurence Freeman OSB',
+                'May this group be a true spiritual home for the seeker, a friend for the lonely, a guide for the confused. May those who pray here be strengthened by the Holy Spirit to serve all who come and to receive them as Christ, Himself. In the silence of this room may all the suffering, violence and confusion of the world encounter the power that will console, renew and uplift the human spirit. May this silence be a power to open the hearts of men and women to the vision of God, and so to each other, in love and peace, justice and human dignity. May the beauty of Divine Life fill this group and the hearts of all who pray here with joyful hope. May all who come here weighed down by the problems of humanity, leave, giving thanks for the wonder of human life. We make this prayer through Christ our Lord.'),
+          ],
+        ),
       ),
     );
   }

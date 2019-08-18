@@ -9,8 +9,8 @@ const kSplashTextStyle = TextStyle(
 );
 
 const TextStyle kListTitle = TextStyle(
-  color: Colors.blueGrey,
-  fontSize: 14,
+  color: Colors.white70,
+  fontSize: 13,
   fontWeight: FontWeight.w600,
 );
 
@@ -25,19 +25,21 @@ const TextStyle kButtonTextStyle = TextStyle(
 );
 
 const TextStyle kNewsDetailTitleStyle = TextStyle(
-  color: Colors.blueGrey,
+  color: Colors.white70,
   fontWeight: FontWeight.w800,
   fontSize: 20,
   height: 1.2,
 );
 
 const TextStyle kNewsLinkStyle = TextStyle(
-  color: Colors.teal,
+  color: Colors.tealAccent,
   fontWeight: FontWeight.w800,
   fontSize: 14,
 );
 
-const Color kBackgroundColor = Color(0xFFFCFCFC);
+const Color kBackgroundColor = Colors.blueGrey;
+
+const Color kTimerBackgroundColor = Color(0xFFFCFCFC);
 
 const TextStyle kResourceCardTitleStyle = TextStyle(
   color: Colors.teal,

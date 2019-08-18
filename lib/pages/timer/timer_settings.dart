@@ -61,7 +61,9 @@ class _TimerSettingsState extends State<TimerSettings> {
   @override
   Widget build(BuildContext context) {
     if (!_updatedFromPreferences) {
-      return new Container();
+      return new Container(
+        decoration: BoxDecoration(color: Colors.blueGrey),
+      );
     }
     return Scaffold(
       backgroundColor: kBackgroundColor,

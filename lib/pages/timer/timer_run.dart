@@ -117,7 +117,7 @@ class _TimerRunState extends State<TimerRun> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kTimerBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Column(

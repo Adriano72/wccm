@@ -7,6 +7,7 @@ class Resources extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kBackgroundColor,
       body: ListView(
         children: <Widget>[
           SizedBox(
@@ -63,6 +64,8 @@ _launchURL(String url) async {
 Card _createResourceCard(
     IconData cardIcon, String title, String subTitle, String resUrl) {
   Card createResCard = Card(
+    margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+    color: Colors.white,
     elevation: 2,
     child: GestureDetector(
       onTap: () {

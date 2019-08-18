@@ -102,9 +102,10 @@ class _ListPage extends State<NewsListPage> {
   Widget build(BuildContext context) {
     if (allTheNews.length == 0) {
       return Scaffold(
+        backgroundColor: kBackgroundColor,
         body: Center(
-          child: SpinKitFadingGrid(
-            color: Colors.blueGrey,
+          child: SpinKitDoubleBounce(
+            color: Colors.white70,
             size: 100.0,
           ),
         ),
@@ -141,7 +142,7 @@ class _ListPage extends State<NewsListPage> {
                         child: Stack(children: <Widget>[
                           Image.network(
                             item.imageUrl,
-                            fit: BoxFit.contain,
+                            fit: BoxFit.cover,
                             width: 1000.0,
                           ),
                           Positioned(
@@ -153,7 +154,7 @@ class _ListPage extends State<NewsListPage> {
                                 gradient: LinearGradient(
                                   colors: [
                                     Colors.blueGrey,
-                                    Colors.white,
+                                    Colors.white70,
                                   ],
                                   begin: Alignment.bottomCenter,
                                   end: Alignment.topCenter,
@@ -167,16 +168,9 @@ class _ListPage extends State<NewsListPage> {
                                 item.title,
                                 //overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black54,
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 5.0,
-                                      color: Colors.black,
-                                      offset: Offset(1.0, 1.0),
-                                    ),
-                                  ],
                                 ),
                               ),
                             ),
@@ -196,7 +190,7 @@ class _ListPage extends State<NewsListPage> {
               itemBuilder: (BuildContext content, int index) {
                 return ListTile(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
+                      EdgeInsets.symmetric(horizontal: 25.0, vertical: 7.0),
                   dense: true,
                   leading: CircleAvatar(
                     backgroundImage:
