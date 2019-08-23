@@ -27,8 +27,8 @@ class _HomeState extends State<Home> {
     ]);
 
     _children = [
-      NewsListPage(goToTimerTab),
       TimerSettings(),
+      NewsListPage(goToTimerTab),
       Resources(),
     ];
     super.initState();
@@ -46,12 +46,12 @@ class _HomeState extends State<Home> {
     switch (_currentIndex) {
       case 0:
         {
-          return Text('WCCM News');
+          return Text('Meditation Timer');
         }
         break;
       case 1:
         {
-          return Text('Meditation Timer');
+          return Text('WCCM News');
         }
         break;
       case 2:
@@ -95,9 +95,9 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.all(0.0),
               children: <Widget>[
                 ListTile(
-                  leading: Icon(
-                    Icons.web,
-                    color: kDrawerIconsColor,
+                  leading: Image.asset(
+                    "assets/images/doves4.png",
+                    width: 21.0,
                   ),
                   title: Text('WCCM'),
                   onTap: () {
@@ -105,9 +105,9 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
-                    Icons.home,
-                    color: kDrawerIconsColor,
+                  leading: Image.asset(
+                    "assets/images/bnvx4.png",
+                    width: 21.0,
                   ),
                   title: Text('Bonnevaux'),
                   onTap: () {
@@ -135,9 +135,9 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
-                    FontAwesomeIcons.solidBuilding,
-                    color: kDrawerIconsColor,
+                  leading: Image.asset(
+                    "assets/images/meditatioCentre.png",
+                    width: 21.0,
                   ),
                   title: Text('The Meditatio Centre'),
                   onTap: () {
@@ -145,9 +145,9 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(
-                    FontAwesomeIcons.cross,
-                    color: kDrawerIconsColor,
+                  leading: Image.asset(
+                    "assets/images/oblates.png",
+                    width: 21.0,
                   ),
                   title: Text('Oblates website'),
                   onTap: () {
@@ -155,6 +155,16 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 Divider(),
+                ListTile(
+                  leading: Icon(
+                    FontAwesomeIcons.podcast,
+                    color: kDrawerIconsColor,
+                  ),
+                  title: Text('Podcast'),
+                  onTap: () {
+                    _launchURL('https://wccm-podcasts.simplecast.com');
+                  },
+                ),
                 ListTile(
                   leading: Icon(
                     FontAwesomeIcons.youtube,
@@ -174,16 +184,6 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     _launchURL(
                         'https://www.facebook.com/christian.meditation.wccm');
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    FontAwesomeIcons.podcast,
-                    color: kDrawerIconsColor,
-                  ),
-                  title: Text('Podcast'),
-                  onTap: () {
-                    _launchURL('https://wccm-podcasts.simplecast.com');
                   },
                 ),
                 ListTile(
@@ -225,7 +225,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text('Contact us'),
                   onTap: () {
-                    _launchURL('mailto://adriano@wccm.org');
+                    _launchURL('mailto:adriano@wccm.org');
                   },
                 ),
                 SizedBox(
@@ -270,21 +270,6 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.radio,
-            ),
-            activeIcon: Icon(
-              Icons.radio,
-              color: Colors.white70,
-            ),
-            title: Text(
-              'News',
-              style: TextStyle(
-                color: Colors.white70,
-              ),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
               Icons.timer,
             ),
             activeIcon: Icon(
@@ -293,6 +278,21 @@ class _HomeState extends State<Home> {
             ),
             title: Text(
               'Timer',
+              style: TextStyle(
+                color: Colors.white70,
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.radio,
+            ),
+            activeIcon: Icon(
+              Icons.radio,
+              color: Colors.white70,
+            ),
+            title: Text(
+              'News',
               style: TextStyle(
                 color: Colors.white70,
               ),

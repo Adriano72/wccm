@@ -59,7 +59,7 @@ class AfterSplash extends StatelessWidget {
       theme: ThemeData(
         backgroundColor: kBackgroundColor,
         brightness: Brightness.light,
-        primaryColor: Colors.blueGrey,
+        primaryColor: Color(0xff78909c),
         accentColor: Colors.teal,
         fontFamily: 'Montserrat',
 

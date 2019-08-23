@@ -121,6 +121,7 @@ class _ListPage extends State<NewsListPage> {
           ),
           CarouselSlider(
               autoPlay: true,
+              autoPlayInterval: Duration(seconds: 5),
               enlargeCenterPage: true,
               viewportFraction: 0.9,
               aspectRatio: 2.0,
