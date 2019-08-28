@@ -11,10 +11,19 @@ class Prayers extends StatefulWidget {
 
 class _PrayersState extends State<Prayers> {
   String introAudio = 'intro_med_forapp.mp3';
+  bool isPlaying = false;
+
   @override
   void initState() {
     player.load(introAudio);
     super.initState();
+  }
+
+  void playAudio() {
+    player.play(introAudio);
+    setState(() {
+      isPlaying = true;
+    });
   }
 
   static AudioPlayer advancedPlayer = AudioPlayer();
@@ -40,7 +49,92 @@ class _PrayersState extends State<Prayers> {
             SizedBox(
               height: 10.0,
             ),
-            _createAudioCard(),
+            Card(
+              elevation: 4,
+              child: Column(
+                //crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Image.asset(
+                    'assets/images/medtitationInstructions.png',
+                    fit: BoxFit.fill,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 15, right: 20, top: 20, bottom: 0),
+                    child: Text(
+                      'Meditation Instructions',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Laurence Freeman OSB',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ClipOval(
+                          child: Material(
+                            color: Colors.blueGrey, // button color
+                            child: InkWell(
+                              splashColor: Colors.blueAccent, // inkwell color
+                              child: SizedBox(
+                                width: 56,
+                                height: 56,
+                                child: isPlaying
+                                    ? Icon(Icons.pause)
+                                    : Icon(Icons.play_arrow),
+                              ),
+                              onTap: () {
+                                if (isPlaying) {
+                                  advancedPlayer.pause();
+                                  setState(() {
+                                    isPlaying = false;
+                                  });
+                                } else {
+                                  player.play(introAudio);
+                                  setState(() {
+                                    isPlaying = true;
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        ClipOval(
+                          child: Material(
+                            color: Colors.blueGrey, // button color
+                            child: InkWell(
+                              splashColor:
+                                  Colors.lightBlueAccent, // inkwell color
+                              child: SizedBox(
+                                width: 56,
+                                height: 56,
+                                child: Icon(Icons.stop),
+                              ),
+                              onTap: () {
+                                advancedPlayer.stop();
+                                setState(() {
+                                  isPlaying = false;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
             SizedBox(height: 10.0),
             _createPrayerCard(
                 'assets/images/johnMainPic.png',
@@ -126,56 +220,57 @@ Card _createPrayerCard(
 
 Card _createAudioCard() {
   Card createResCard = Card(
-      elevation: 4,
-      child: Column(
-        //crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Image.asset(
-            'assets/images/medtitationInstructions.png',
-            fit: BoxFit.fill,
+    elevation: 4,
+    child: Column(
+      //crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Image.asset(
+          'assets/images/medtitationInstructions.png',
+          fit: BoxFit.fill,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 15, top: 20, bottom: 0),
+          child: Text(
+            'Meditation Instructions',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 15, top: 20, bottom: 0),
-            child: Text(
-              'Meditation Instructions',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20.0,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              ClipOval(
+                child: Material(
+                  color: Colors.blueGrey, // button color
+                  child: InkWell(
+                    splashColor: Colors.blueAccent, // inkwell color
+                    child: SizedBox(
+                        width: 56, height: 56, child: Icon(Icons.play_arrow)),
+                    onTap: () {},
+                  ),
+                ),
               ),
-            ),
+              ClipOval(
+                child: Material(
+                  color: Colors.blueGrey, // button color
+                  child: InkWell(
+                    splashColor: Colors.lightBlueAccent, // inkwell color
+                    child: SizedBox(
+                        width: 56, height: 56, child: Icon(Icons.stop)),
+                    onTap: () {},
+                  ),
+                ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ClipOval(
-                  child: Material(
-                    color: Colors.blueGrey, // button color
-                    child: InkWell(
-                      splashColor: Colors.blueAccent, // inkwell color
-                      child: SizedBox(
-                          width: 56, height: 56, child: Icon(Icons.play_arrow)),
-                      onTap: () {},
-                    ),
-                  ),
-                ),
-                ClipOval(
-                  child: Material(
-                    color: Colors.blueGrey, // button color
-                    child: InkWell(
-                      splashColor: Colors.lightBlueAccent, // inkwell color
-                      child: SizedBox(
-                          width: 56, height: 56, child: Icon(Icons.stop)),
-                      onTap: () {},
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ));
+        )
+      ],
+    ),
+  );
 
   return createResCard;
 }
