@@ -106,7 +106,8 @@ class _HomeState extends State<Home> {
                 ),
                 ListTile(
                   leading: Image.asset(
-                    "assets/images/bnvx4.png",
+                    "assets/images/archesFinal13"
+                    ".png",
                     width: 21.0,
                   ),
                   title: Text('Bonnevaux'),
@@ -247,7 +248,7 @@ class _HomeState extends State<Home> {
         title: _appBarTitleSwitcher(),
         actions: <Widget>[
           Visibility(
-            visible: _currentIndex == 1,
+            visible: _currentIndex == 0,
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(

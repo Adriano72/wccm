@@ -140,7 +140,13 @@ class _TimerRunState extends State<TimerRun> {
                 radius: 180.0,
                 lineWidth: 5.0,
                 percent: timePercent,
-                center: Text(formatTime(medDuration)),
+                center: Text(
+                  formatTime(medDuration),
+                  style: TextStyle(
+                    fontSize: 28,
+                    //fontWeight: FontWeight.bold,
+                  ),
+                ),
                 progressColor: Colors.teal,
               ),
               Opacity(

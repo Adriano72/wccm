@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wccm/constants.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:async';
 
-class Prayers extends StatelessWidget {
+class Prayers extends StatefulWidget {
   @override
+  _PrayersState createState() => _PrayersState();
+}
+
+class _PrayersState extends State<Prayers> {
+  String introAudio = 'intro_med_forapp.mp3';
+  @override
+  void initState() {
+    player.load(introAudio);
+    super.initState();
+  }
+
+  static AudioPlayer advancedPlayer = AudioPlayer();
+  AudioCache player = AudioCache(
+      respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
           title: Text(
-            'Prayers for meditation',
+            'How to meditate & Prayers',
             style: TextStyle(color: Colors.white70),
           ),
           backgroundColor: kBackgroundColor,
@@ -23,11 +40,14 @@ class Prayers extends StatelessWidget {
             SizedBox(
               height: 10.0,
             ),
+            _createAudioCard(),
+            SizedBox(height: 10.0),
             _createPrayerCard(
                 'assets/images/johnMainPic.png',
                 'Opening Prayer',
                 'By John Main OSB',
                 "Heavenly Father, open our hearts to the silent presence of the spirit of your Son. Lead us into that mysterious silence where your love is revealed to all who call, 'Maranatha…Come, Lord Jesus'."),
+            SizedBox(height: 10.0),
             _createPrayerCard(
                 'assets/images/laurencePic.png',
                 'Closing Prayer',
@@ -96,6 +116,62 @@ Card _createPrayerCard(
                 //fontWeight: FontWeight.w700,
                 color: Colors.blueGrey,
               ),
+            ),
+          )
+        ],
+      ));
+
+  return createResCard;
+}
+
+Card _createAudioCard() {
+  Card createResCard = Card(
+      elevation: 4,
+      child: Column(
+        //crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Image.asset(
+            'assets/images/medtitationInstructions.png',
+            fit: BoxFit.fill,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 15, top: 20, bottom: 0),
+            child: Text(
+              'Meditation Instructions',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                ClipOval(
+                  child: Material(
+                    color: Colors.blueGrey, // button color
+                    child: InkWell(
+                      splashColor: Colors.blueAccent, // inkwell color
+                      child: SizedBox(
+                          width: 56, height: 56, child: Icon(Icons.play_arrow)),
+                      onTap: () {},
+                    ),
+                  ),
+                ),
+                ClipOval(
+                  child: Material(
+                    color: Colors.blueGrey, // button color
+                    child: InkWell(
+                      splashColor: Colors.lightBlueAccent, // inkwell color
+                      child: SizedBox(
+                          width: 56, height: 56, child: Icon(Icons.stop)),
+                      onTap: () {},
+                    ),
+                  ),
+                ),
+              ],
             ),
           )
         ],

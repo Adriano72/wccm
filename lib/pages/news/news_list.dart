@@ -70,7 +70,7 @@ class _ListPage extends State<NewsListPage> {
     print('_______IS CONNECTED: $isConnected');
 
     var response = await get(apiURL);
-//    print('RESPONSE ${json.decode(response.body)}');
+    print('RESPONSE ${json.decode(response.body)}');
     var decodedResponse = json.decode(response.body);
     List itemsNode = decodedResponse['items'];
     List allAssets = decodedResponse['includes']['Asset'];
