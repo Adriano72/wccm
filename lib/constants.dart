@@ -10,13 +10,13 @@ const kSplashTextStyle = TextStyle(
 
 const TextStyle kListTitle = TextStyle(
   color: Colors.white70,
-  fontSize: 13,
-  fontWeight: FontWeight.w600,
+  fontSize: 14,
+  fontWeight: FontWeight.bold,
 );
 
 const TextStyle kListBlurb = TextStyle(
   color: Colors.black,
-  fontSize: 12,
+  fontSize: 13,
   //fontFamily: 'Montserrat',
 );
 
@@ -37,7 +37,7 @@ const TextStyle kNewsLinkStyle = TextStyle(
   fontSize: 14,
 );
 
-const Color kBackgroundColor = Color(0xFF78909c);
+const Color kBackgroundColor = Color(0xFF2694c4); //78909c
 
 const Color kTimerBackgroundColor = Color(0xFFFCFCFC);
 

@@ -201,11 +201,11 @@ class _ListPage extends State<NewsListPage> {
                     allTheNews[index].title,
                     style: kListTitle,
                   ),
-                  subtitle: Text(
-                    allTheNews[index].blurb,
-                    overflow: TextOverflow.ellipsis,
-                    style: kListBlurb,
-                  ),
+//                  subtitle: Text(
+//                    allTheNews[index].blurb,
+//                    overflow: TextOverflow.ellipsis,
+//                    style: kListBlurb,
+//                  ),
                   onTap: () {
                     Navigator.push(
                       context,

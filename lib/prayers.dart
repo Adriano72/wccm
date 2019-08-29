@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:wccm/constants.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -45,6 +46,7 @@ class _PrayersState extends State<Prayers> {
       ),
       body: SafeArea(
         child: ListView(
+          scrollDirection: Axis.vertical,
           children: <Widget>[
             SizedBox(
               height: 10.0,
@@ -60,7 +62,7 @@ class _PrayersState extends State<Prayers> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        left: 15, right: 20, top: 20, bottom: 0),
+                        left: 15, right: 20, top: 20, bottom: 10),
                     child: Text(
                       'Meditation Instructions',
                       textAlign: TextAlign.center,
@@ -70,14 +72,14 @@ class _PrayersState extends State<Prayers> {
                     ),
                   ),
                   Text(
-                    'Laurence Freeman OSB',
+                    'By Laurence Freeman OSB',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14.0,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -131,7 +133,7 @@ class _PrayersState extends State<Prayers> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -166,6 +168,8 @@ Card _createPrayerCard(
               FittedBox(
                 child: Image.asset(
                   cardImage,
+                  width: 496.0,
+                  height: 267.0,
                 ),
                 fit: BoxFit.cover,
               ),
@@ -214,63 +218,6 @@ Card _createPrayerCard(
           )
         ],
       ));
-
-  return createResCard;
-}
-
-Card _createAudioCard() {
-  Card createResCard = Card(
-    elevation: 4,
-    child: Column(
-      //crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Image.asset(
-          'assets/images/medtitationInstructions.png',
-          fit: BoxFit.fill,
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 15, top: 20, bottom: 0),
-          child: Text(
-            'Meditation Instructions',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              ClipOval(
-                child: Material(
-                  color: Colors.blueGrey, // button color
-                  child: InkWell(
-                    splashColor: Colors.blueAccent, // inkwell color
-                    child: SizedBox(
-                        width: 56, height: 56, child: Icon(Icons.play_arrow)),
-                    onTap: () {},
-                  ),
-                ),
-              ),
-              ClipOval(
-                child: Material(
-                  color: Colors.blueGrey, // button color
-                  child: InkWell(
-                    splashColor: Colors.lightBlueAccent, // inkwell color
-                    child: SizedBox(
-                        width: 56, height: 56, child: Icon(Icons.stop)),
-                    onTap: () {},
-                  ),
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    ),
-  );
 
   return createResCard;
 }

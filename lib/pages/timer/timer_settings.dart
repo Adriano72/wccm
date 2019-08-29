@@ -115,7 +115,7 @@ class _TimerSettingsState extends State<TimerSettings> {
             ),
             Flexible(
               child: RaisedButton(
-                color: Colors.teal,
+                color: Colors.indigo,
                 onPressed: () {
                   Navigator.push(
                       context,
