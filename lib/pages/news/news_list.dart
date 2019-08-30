@@ -123,7 +123,7 @@ class _ListPage extends State<NewsListPage> {
               autoPlay: true,
               autoPlayInterval: Duration(seconds: 5),
               enlargeCenterPage: true,
-              viewportFraction: 0.9,
+              viewportFraction: 0.85,
               aspectRatio: 2.0,
               items: highlights.map(
                 (item) {
@@ -191,7 +191,7 @@ class _ListPage extends State<NewsListPage> {
               itemBuilder: (BuildContext content, int index) {
                 return ListTile(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 25.0, vertical: 7.0),
+                      EdgeInsets.symmetric(horizontal: 35.0, vertical: 15.0),
                   dense: true,
                   leading: CircleAvatar(
                     backgroundImage:

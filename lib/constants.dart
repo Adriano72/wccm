@@ -37,7 +37,7 @@ const TextStyle kNewsLinkStyle = TextStyle(
   fontSize: 14,
 );
 
-const Color kBackgroundColor = Color(0xFF2694c4); //78909c
+const Color kBackgroundColor = Color(0xFF303F9F); //78909c
 
 const Color kTimerBackgroundColor = Color(0xFFFCFCFC);
 
