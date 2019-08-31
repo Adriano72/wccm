@@ -117,7 +117,7 @@ class _TimerRunState extends State<TimerRun> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kTimerBackgroundColor,
+      backgroundColor: Colors.blueGrey,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -129,6 +129,7 @@ class _TimerRunState extends State<TimerRun> {
                   'Meditation',
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    color: Colors.white70,
                     height: 1.3,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -138,7 +139,7 @@ class _TimerRunState extends State<TimerRun> {
               CircularPercentIndicator(
                 circularStrokeCap: CircularStrokeCap.round,
                 radius: 180.0,
-                lineWidth: 5.0,
+                lineWidth: 12.0,
                 percent: timePercent,
                 center: Text(
                   formatTime(medDuration),
@@ -147,7 +148,7 @@ class _TimerRunState extends State<TimerRun> {
                     //fontWeight: FontWeight.bold,
                   ),
                 ),
-                progressColor: Colors.teal,
+                progressColor: Colors.amberAccent,
               ),
               Opacity(
                 opacity: preparationNoticeVisibility,
@@ -155,7 +156,7 @@ class _TimerRunState extends State<TimerRun> {
               ),
               Flexible(
                 child: RaisedButton(
-                  color: Colors.teal,
+                  color: Colors.amber,
                   onPressed: () {
                     if (isPreparationTime) {
                       Wakelock.toggle(on: false);

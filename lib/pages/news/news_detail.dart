@@ -54,7 +54,7 @@ class NewsDetail extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               child: Text(
-                (news.link == null) ? '' : 'More info here',
+                (news.link == null) ? '' : 'More info',
                 style: kNewsLinkStyle,
               ),
               onTap: () {

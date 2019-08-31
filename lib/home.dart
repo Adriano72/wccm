@@ -328,7 +328,7 @@ class _HomeState extends State<Home> {
 
   void goToTimerTab() {
     setState(() {
-      _currentIndex = 1;
+      _currentIndex = 0;
     });
   }
 }

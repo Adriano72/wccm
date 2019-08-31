@@ -8,42 +8,45 @@ class Resources extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      body: ListView(
-        children: <Widget>[
-          SizedBox(
-            height: 10.0,
-          ),
-          _createResourceCard(
-            FontAwesomeIcons.lightbulb,
-            'Daily Wisdom',
-            'Inspiration for every day',
-            kDailyWisdomURL,
-          ),
-          _createResourceCard(
-            FontAwesomeIcons.book,
-            'Weekly Readings',
-            'For personal formation',
-            kWeeklyReadingsURL,
-          ),
-          _createResourceCard(
-            Icons.school,
-            'Weekly Teachings',
-            'For group formation',
-            kWeeklyTeachingsURL,
-          ),
-          _createResourceCard(
-            Icons.new_releases,
-            'Monthly News',
-            'Updates from the Community',
-            kMonthlyNewsURL,
-          ),
-          _createResourceCard(
-            Icons.group,
-            'Online Groups',
-            'Join an online meditation group',
-            kOnlineGroupsURL,
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 10.0,
+            ),
+            _createResourceCard(
+              FontAwesomeIcons.lightbulb,
+              'Daily Wisdom',
+              'Inspiration for every day',
+              kDailyWisdomURL,
+            ),
+            _createResourceCard(
+              FontAwesomeIcons.book,
+              'Weekly Readings',
+              'For personal formation',
+              kWeeklyReadingsURL,
+            ),
+            _createResourceCard(
+              Icons.school,
+              'Weekly Teachings',
+              'For group formation',
+              kWeeklyTeachingsURL,
+            ),
+            _createResourceCard(
+              Icons.new_releases,
+              'Monthly News',
+              'Updates from the Community',
+              kMonthlyNewsURL,
+            ),
+            _createResourceCard(
+              Icons.group,
+              'Online Groups',
+              'Join an online meditation group',
+              kOnlineGroupsURL,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -64,7 +67,7 @@ _launchURL(String url) async {
 Card _createResourceCard(
     IconData cardIcon, String title, String subTitle, String resUrl) {
   Card createResCard = Card(
-    margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
     color: Colors.white,
     elevation: 2,
     child: GestureDetector(
@@ -76,9 +79,9 @@ Card _createResourceCard(
           Flexible(
             flex: 1,
             child: Container(
-              decoration: BoxDecoration(color: Color(0xbb607D8B)),
+              decoration: BoxDecoration(color: Colors.blueGrey),
               child: Padding(
-                padding: const EdgeInsets.all(23.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Icon(
                   cardIcon,
                   color: Colors.white,

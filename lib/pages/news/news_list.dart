@@ -33,7 +33,7 @@ class _ListPage extends State<NewsListPage> {
       context: context,
       title: "Warning",
       body:
-          "It looks like there's no connection available to fetch the News, please check if you have connection or if your phone is set to airplane mode. Until then the news tab will be disabled",
+          "Couldn't fetch the News, please check if you have connection or if your phone is set to airplane mode.",
       actions: [
         AlertAction(
           text: "Got it",
@@ -67,29 +67,36 @@ class _ListPage extends State<NewsListPage> {
   }
 
   void fetchAllNews() async {
-    print('_______IS CONNECTED: $isConnected');
+    //print('_______IS CONNECTED: $isConnected');
 
-    var response = await get(apiURL);
-    print('RESPONSE ${json.decode(response.body)}');
-    var decodedResponse = json.decode(response.body);
-    List itemsNode = decodedResponse['items'];
-    List allAssets = decodedResponse['includes']['Asset'];
+    try {
+      final response = await get(apiURL);
+      print('RESPONSE ${json.decode(response.body)}');
+      final decodedResponse = json.decode(response.body);
 
-    itemsNode.forEach((item) {
+      List itemsNode = decodedResponse['items'];
+      List allAssets = decodedResponse['includes']['Asset'];
+
+      itemsNode.forEach((item) {
 //      print('ASSETS: $item');
-      var imageId = item['fields']['image']['sys']['id'];
-      Map<String, dynamic> urlNode = allAssets.firstWhere(
-          (imgValue) => imgValue['sys']['id'] == imageId,
-          orElse: () => null);
-      var itemModel = NewsModel.fromJson(item, urlNode);
-      setState(() {
-        if (itemModel.inEvidence == true) {
-          highlights.add(itemModel);
-        }
-        allTheNews.add(itemModel);
+        var imageId = item['fields']['image']['sys']['id'];
+        Map<String, dynamic> urlNode = allAssets.firstWhere(
+            (imgValue) => imgValue['sys']['id'] == imageId,
+            orElse: () => null);
+        var itemModel = NewsModel.fromJson(item, urlNode);
+        setState(() {
+          if (itemModel.inEvidence == true) {
+            highlights.add(itemModel);
+          }
+          allTheNews.add(itemModel);
 //        print('ALL THE NEWS $allTheNews');
+        });
       });
-    });
+    } on TimeoutException catch (_) {
+      _showNoNetworkAlert();
+    } catch (e) {
+      _showNoNetworkAlert();
+    }
   }
 
   @override
@@ -170,7 +177,7 @@ class _ListPage extends State<NewsListPage> {
                                 //overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: Colors.black54,
-                                  fontSize: 16.0,
+                                  fontSize: 12.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

@@ -10,7 +10,7 @@ const kSplashTextStyle = TextStyle(
 
 const TextStyle kListTitle = TextStyle(
   color: Colors.white70,
-  fontSize: 14,
+  fontSize: 12,
   fontWeight: FontWeight.bold,
 );
 
@@ -21,7 +21,7 @@ const TextStyle kListBlurb = TextStyle(
 );
 
 const TextStyle kButtonTextStyle = TextStyle(
-  color: Colors.white,
+  color: Colors.black45,
 );
 
 const TextStyle kNewsDetailTitleStyle = TextStyle(
@@ -32,12 +32,18 @@ const TextStyle kNewsDetailTitleStyle = TextStyle(
 );
 
 const TextStyle kNewsLinkStyle = TextStyle(
-  color: Colors.tealAccent,
+  color: Colors.amber,
   fontWeight: FontWeight.w800,
   fontSize: 14,
 );
 
-const Color kBackgroundColor = Color(0xFF303F9F); //78909c
+const TextStyle kPrayersBodyTextStyle = TextStyle(
+  height: 1.2,
+  fontSize: 18,
+  color: Colors.white70,
+);
+
+const Color kBackgroundColor = Color(0xFF455A64); //78909c
 
 const Color kTimerBackgroundColor = Color(0xFFFCFCFC);
 

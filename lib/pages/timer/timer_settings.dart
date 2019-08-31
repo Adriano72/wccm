@@ -80,6 +80,7 @@ class _TimerSettingsState extends State<TimerSettings> {
                 'Session time',
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                  color: Colors.white70,
                   height: 1.3,
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -115,7 +116,7 @@ class _TimerSettingsState extends State<TimerSettings> {
             ),
             Flexible(
               child: RaisedButton(
-                color: Colors.indigo,
+                color: Colors.amber,
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -126,7 +127,7 @@ class _TimerSettingsState extends State<TimerSettings> {
                 },
                 child: Text(
                   "Start",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black54),
                 ),
               ),
             ),

@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:wccm/constants.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'dart:async';
 
 class Prayers extends StatefulWidget {
   @override
@@ -12,19 +11,44 @@ class Prayers extends StatefulWidget {
 
 class _PrayersState extends State<Prayers> {
   String introAudio = 'intro_med_forapp.mp3';
-  bool isPlaying = false;
+  String audioState = 'stopped';
+  Duration position = Duration(milliseconds: 0);
+  Duration duration = Duration(milliseconds: 59000);
 
   @override
   void initState() {
     player.load(introAudio);
+    advancedPlayer.onPlayerCompletion.listen(
+      (event) {
+        setState(() {
+          audioState = 'stopped';
+        });
+      },
+    );
+    advancedPlayer.onDurationChanged.listen((Duration d) {
+      print('Max duration: ${d.inSeconds}');
+      setState(() => duration = d);
+    });
+
+    advancedPlayer.onAudioPositionChanged.listen((Duration p) {
+      print('Current position: ${p.inSeconds}');
+      setState(() => position = p);
+    });
+    //getAudioDuration();
     super.initState();
   }
 
   void playAudio() {
     player.play(introAudio);
     setState(() {
-      isPlaying = true;
+      audioState = 'playing';
     });
+  }
+
+  @override
+  void dispose() {
+    advancedPlayer.stop();
+    super.dispose();
   }
 
   static AudioPlayer advancedPlayer = AudioPlayer();
@@ -87,25 +111,36 @@ class _PrayersState extends State<Prayers> {
                           child: Material(
                             color: Colors.blueGrey, // button color
                             child: InkWell(
-                              splashColor: Colors.blueAccent, // inkwell color
+                              splashColor: Color(0xFFCFD8DC), // inkwell color
                               child: SizedBox(
                                 width: 56,
                                 height: 56,
-                                child: isPlaying
+                                child: (audioState == 'playing')
                                     ? Icon(Icons.pause)
                                     : Icon(Icons.play_arrow),
                               ),
                               onTap: () {
-                                if (isPlaying) {
+                                if (audioState == 'playing') {
                                   advancedPlayer.pause();
-                                  setState(() {
-                                    isPlaying = false;
-                                  });
-                                } else {
+                                  setState(
+                                    () {
+                                      audioState = 'paused';
+                                    },
+                                  );
+                                } else if (audioState == 'paused') {
+                                  advancedPlayer.resume();
+                                  setState(
+                                    () {
+                                      audioState = 'playing';
+                                    },
+                                  );
+                                } else if (audioState == 'stopped') {
                                   player.play(introAudio);
-                                  setState(() {
-                                    isPlaying = true;
-                                  });
+                                  setState(
+                                    () {
+                                      audioState = 'playing';
+                                    },
+                                  );
                                 }
                               },
                             ),
@@ -115,8 +150,7 @@ class _PrayersState extends State<Prayers> {
                           child: Material(
                             color: Colors.blueGrey, // button color
                             child: InkWell(
-                              splashColor:
-                                  Colors.lightBlueAccent, // inkwell color
+                              splashColor: Color(0xFFCFD8DC), // inkwell color
                               child: SizedBox(
                                 width: 56,
                                 height: 56,
@@ -125,7 +159,7 @@ class _PrayersState extends State<Prayers> {
                               onTap: () {
                                 advancedPlayer.stop();
                                 setState(() {
-                                  isPlaying = false;
+                                  audioState = 'stopped';
                                 });
                               },
                             ),
@@ -133,6 +167,17 @@ class _PrayersState extends State<Prayers> {
                         ),
                       ],
                     ),
+                  ),
+                  Slider(
+                    value: position?.inMilliseconds?.toDouble() ?? 0.0,
+                    activeColor: Colors.amber,
+                    inactiveColor: Color(0xFFCFD8DC),
+                    onChanged: (double value) {
+                      advancedPlayer
+                          .seek(Duration(milliseconds: value.toInt()));
+                    },
+                    min: 0.0,
+                    max: duration.inMilliseconds.toDouble(),
                   ),
                 ],
               ),
@@ -208,12 +253,7 @@ Card _createPrayerCard(
             padding: EdgeInsets.all(15.0),
             child: Text(
               prayer,
-              style: TextStyle(
-                height: 1.2,
-                fontSize: 18,
-                //fontWeight: FontWeight.w700,
-                color: Colors.blueGrey,
-              ),
+              style: kPrayersBodyTextStyle,
             ),
           )
         ],
