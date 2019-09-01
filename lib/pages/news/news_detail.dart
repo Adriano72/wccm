@@ -20,7 +20,7 @@ class NewsDetail extends StatelessWidget {
     var parsedDate = DateTime.parse(news.dateOfCreation);
 
     Padding dateBox = Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Row(
         children: <Widget>[
           Icon(
@@ -48,7 +48,7 @@ class NewsDetail extends StatelessWidget {
 
   Padding _createLinkBox() {
     Padding linkBox = Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Center(
         child: Row(
           children: <Widget>[
@@ -89,7 +89,7 @@ class NewsDetail extends StatelessWidget {
               elevation: 5,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
               child: Text(
                 news.title,
                 style: kNewsDetailTitleStyle,
@@ -97,12 +97,10 @@ class NewsDetail extends StatelessWidget {
             ),
             _createDateBox(),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Text(
                 news.body,
-                style: TextStyle(
-                  height: 1.2,
-                ),
+                style: kNewsDetailTextStyle,
               ),
             ),
             _createLinkBox(),

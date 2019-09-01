@@ -25,9 +25,14 @@ const TextStyle kButtonTextStyle = TextStyle(
 );
 
 const TextStyle kNewsDetailTitleStyle = TextStyle(
-  color: Colors.white70,
+  color: Colors.white,
   fontWeight: FontWeight.w800,
   fontSize: 20,
+  height: 1.2,
+);
+
+const kNewsDetailTextStyle = TextStyle(
+  color: Colors.white,
   height: 1.2,
 );
 

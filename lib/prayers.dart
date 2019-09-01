@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'dart:io';
 import 'package:wccm/constants.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -10,7 +10,7 @@ class Prayers extends StatefulWidget {
 }
 
 class _PrayersState extends State<Prayers> {
-  String introAudio = 'intro_med_forapp.mp3';
+  String introAudio = 'intro_med_forapp_cbr.mp3';
   String audioState = 'stopped';
   Duration position = Duration(milliseconds: 0);
   Duration duration = Duration(milliseconds: 59000);
@@ -26,13 +26,20 @@ class _PrayersState extends State<Prayers> {
       },
     );
     advancedPlayer.onDurationChanged.listen((Duration d) {
-      print('Max duration: ${d.inSeconds}');
-      setState(() => duration = d);
+      print('Max duration: ${d.inMilliseconds}');
+      if (mounted) setState(() => duration = d);
+    });
+
+    advancedPlayer.onPlayerCompletion.listen((onData) {
+      if (mounted)
+        setState(() {
+          position = Duration(milliseconds: 0);
+        });
     });
 
     advancedPlayer.onAudioPositionChanged.listen((Duration p) {
-      print('Current position: ${p.inSeconds}');
-      setState(() => position = p);
+      print('Current position: ${p.inMilliseconds}');
+      if (mounted) setState(() => position = p);
     });
     //getAudioDuration();
     super.initState();
@@ -53,7 +60,10 @@ class _PrayersState extends State<Prayers> {
 
   static AudioPlayer advancedPlayer = AudioPlayer();
   AudioCache player = AudioCache(
-      respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
+    prefix: 'sounds/',
+    fixedPlayer: advancedPlayer,
+    respectSilence: false,
+  );
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,10 +167,11 @@ class _PrayersState extends State<Prayers> {
                                 child: Icon(Icons.stop),
                               ),
                               onTap: () {
-                                advancedPlayer.stop();
                                 setState(() {
                                   audioState = 'stopped';
+                                  position = Duration(milliseconds: 0);
                                 });
+                                advancedPlayer.stop();
                               },
                             ),
                           ),
@@ -173,11 +184,18 @@ class _PrayersState extends State<Prayers> {
                     activeColor: Colors.amber,
                     inactiveColor: Color(0xFFCFD8DC),
                     onChanged: (double value) {
+                      print('POSITION: $position');
                       advancedPlayer
                           .seek(Duration(milliseconds: value.toInt()));
+                      if (Platform.isAndroid) {
+                        setState(() {
+                          position = Duration(milliseconds: value.toInt());
+                        });
+                      }
+                      ;
                     },
                     min: 0.0,
-                    max: duration.inMilliseconds.toDouble(),
+                    max: 60000,
                   ),
                 ],
               ),
