@@ -65,6 +65,9 @@ const TextStyle kResourceCartSubTitleStyle = TextStyle(
 );
 const String kDailyWisdomURL =
     'https://wccm.org/sites/default/files/mobilefeedspages/2019/DailyWisdomArchive.html';
+const String kOnlineCoursesURL =
+    'https://www.theschoolofmeditation.org/course-catalogue';
+const String kPodcastsURL = 'https://podcast.wccm.org';
 const String kWeeklyReadingsURL =
     'https://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyReadingsArchive.html';
 const String kWeeklyTeachingsURL =
