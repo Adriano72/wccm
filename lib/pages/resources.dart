@@ -36,7 +36,7 @@ class Resources extends StatelessWidget {
               kPodcastsURL,
             ),
             _createResourceCard(
-              FontAwesomeIcons.lightbulb,
+              Icons.school,
               'Online Courses',
               'Courses Designed for You',
               kOnlineCoursesURL,

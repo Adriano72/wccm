@@ -91,7 +91,7 @@ class _PrayersState extends State<Prayers> {
                 //crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Image.asset(
-                    'assets/images/medtitationInstructions.png',
+                    'assets/images/MedInstructionsFinal.jpg',
                     fit: BoxFit.fill,
                   ),
                   Padding(

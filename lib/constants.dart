@@ -8,6 +8,22 @@ const kSplashTextStyle = TextStyle(
   fontFamily: 'Montserrat',
 );
 
+const kJMTalksListTilesTitle = TextStyle(
+  color: Colors.white,
+  fontSize: 14.0,
+);
+
+const kJMTalksListTilesTrailing = TextStyle(
+  color: Colors.white,
+  fontSize: 12.0,
+);
+
+const kJMTalksPesistentHeader = TextStyle(
+  color: Colors.white,
+  height: 1.2,
+  fontSize: 13.0,
+);
+
 const TextStyle kListTitle = TextStyle(
   color: Colors.white70,
   fontSize: 12,
