@@ -18,7 +18,7 @@ const kJMTalksListTilesTrailing = TextStyle(
   fontSize: 12.0,
 );
 
-const kJMTalksPesistentHeader = TextStyle(
+const kJMTalksPersistentHeader = TextStyle(
   color: Colors.white,
   height: 1.2,
   fontSize: 13.0,
@@ -71,7 +71,7 @@ const Color kTimerBackgroundColor = Color(0xFFFCFCFC);
 
 const TextStyle kResourceCardTitleStyle = TextStyle(
   color: Colors.teal,
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w500,
   fontSize: 22,
 );
 
