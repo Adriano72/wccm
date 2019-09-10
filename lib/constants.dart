@@ -37,7 +37,8 @@ const TextStyle kListBlurb = TextStyle(
 );
 
 const TextStyle kButtonTextStyle = TextStyle(
-  color: Colors.black45,
+  color: Color(0xFF212121),
+  fontWeight: FontWeight.w600,
 );
 
 const TextStyle kNewsDetailTitleStyle = TextStyle(
@@ -70,13 +71,13 @@ const Color kTimerBackgroundColor = Color(0xFFFCFCFC);
 
 const TextStyle kResourceCardTitleStyle = TextStyle(
   color: Colors.teal,
-  fontWeight: FontWeight.w500,
+  fontWeight: FontWeight.w600,
   fontSize: 22,
 );
 
 const TextStyle kResourceCartSubTitleStyle = TextStyle(
-  color: Colors.blueGrey,
-  fontWeight: FontWeight.w300,
+  color: Color(0xFF212121),
+  fontWeight: FontWeight.w600,
   fontSize: 13,
 );
 const String kDailyWisdomURL =

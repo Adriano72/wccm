@@ -18,13 +18,7 @@ class _PrayersState extends State<Prayers> {
   @override
   void initState() {
     player.load(introAudio);
-    advancedPlayer.onPlayerCompletion.listen(
-      (event) {
-        setState(() {
-          audioState = 'stopped';
-        });
-      },
-    );
+
     advancedPlayer.onDurationChanged.listen((Duration d) {
       print('Max duration: ${d.inMilliseconds}');
       if (mounted) setState(() => duration = d);
@@ -33,6 +27,7 @@ class _PrayersState extends State<Prayers> {
     advancedPlayer.onPlayerCompletion.listen((onData) {
       if (mounted)
         setState(() {
+          audioState = 'stopped';
           position = Duration(milliseconds: 0);
         });
     });
@@ -43,13 +38,6 @@ class _PrayersState extends State<Prayers> {
     });
     //getAudioDuration();
     super.initState();
-  }
-
-  void playAudio() {
-    player.play(introAudio);
-    setState(() {
-      audioState = 'playing';
-    });
   }
 
   @override

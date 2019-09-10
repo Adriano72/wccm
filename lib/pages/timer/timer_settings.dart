@@ -127,7 +127,7 @@ class _TimerSettingsState extends State<TimerSettings> {
                 },
                 child: Text(
                   "Start",
-                  style: TextStyle(color: Colors.black54),
+                  style: kButtonTextStyle,
                 ),
               ),
             ),

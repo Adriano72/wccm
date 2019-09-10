@@ -252,6 +252,7 @@ class _HomeState extends State<Home> {
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Prayers()));
