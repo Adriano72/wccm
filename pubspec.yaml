@@ -39,6 +39,8 @@ flutter:
   assets:
   - assets/images/
   - assets/sounds/
+  - assets/audio/for_meditation/
+  - assets/audio/complete/
 
   fonts:
     - family: Montserrat

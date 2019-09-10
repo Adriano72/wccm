@@ -41,6 +41,7 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
         });
       },
     );
+
     advancedPlayer.onDurationChanged.listen((Duration d) {
       print('Max duration: ${d.inMilliseconds}');
       if (mounted) setState(() => duration = d);
@@ -76,116 +77,122 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
 
   static AudioPlayer advancedPlayer = AudioPlayer();
   AudioCache player = AudioCache(
-    prefix: 'sounds/',
+    prefix: 'audio/',
     fixedPlayer: advancedPlayer,
     respectSilence: false,
   );
 
   @override
   Widget build(BuildContext context) {
-    void _onButtonPressed() {
+    void _onButtonPressed(String url) {
       showModalBottomSheet(
           context: context,
           builder: (context) {
-            return Container(
-              color: Theme.of(context).canvasColor,
-              height: 180,
+            return Theme(
+              data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
               child: Container(
-                child: Column(
-                  //crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(40.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          ClipOval(
-                            child: Material(
-                              color: Colors.blueGrey, // button color
-                              child: InkWell(
-                                splashColor: Color(0xFFCFD8DC), // inkwell color
-                                child: SizedBox(
-                                  width: 45,
-                                  height: 45,
-                                  child: (audioState == 'playing')
-                                      ? Icon(Icons.pause)
-                                      : Icon(Icons.play_arrow),
+                color: Colors
+                    .transparent, //TODO: Rendere gli angoli trasparenti con widget Theme
+                height: 180,
+                child: Container(
+                  child: Column(
+                    //crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(40.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            ClipOval(
+                              child: Material(
+                                color: Colors.blueGrey, // button color
+                                child: InkWell(
+                                  splashColor:
+                                      Color(0xFFCFD8DC), // inkwell color
+                                  child: SizedBox(
+                                    width: 45,
+                                    height: 45,
+                                    child: (audioState == 'playing')
+                                        ? Icon(Icons.pause)
+                                        : Icon(Icons.play_arrow),
+                                  ),
+                                  onTap: () {
+                                    if (audioState == 'playing') {
+                                      advancedPlayer.pause();
+                                      setState(
+                                        () {
+                                          audioState = 'paused';
+                                        },
+                                      );
+                                    } else if (audioState == 'paused') {
+                                      advancedPlayer.resume();
+                                      setState(
+                                        () {
+                                          audioState = 'playing';
+                                        },
+                                      );
+                                    } else if (audioState == 'stopped') {
+                                      playAudio(url);
+                                      setState(
+                                        () {
+                                          audioState = 'playing';
+                                        },
+                                      );
+                                    }
+                                  },
                                 ),
-                                onTap: () {
-                                  if (audioState == 'playing') {
-                                    advancedPlayer.pause();
-                                    setState(
-                                      () {
-                                        audioState = 'paused';
-                                      },
-                                    );
-                                  } else if (audioState == 'paused') {
-                                    advancedPlayer.resume();
-                                    setState(
-                                      () {
-                                        audioState = 'playing';
-                                      },
-                                    );
-                                  } else if (audioState == 'stopped') {
-                                    playAudio('ere');
-                                    setState(
-                                      () {
-                                        audioState = 'playing';
-                                      },
-                                    );
-                                  }
-                                },
                               ),
                             ),
-                          ),
-                          ClipOval(
-                            child: Material(
-                              color: Colors.blueGrey, // button color
-                              child: InkWell(
-                                splashColor: Color(0xFFCFD8DC), // inkwell color
-                                child: SizedBox(
-                                  width: 45,
-                                  height: 45,
-                                  child: Icon(Icons.stop),
+                            ClipOval(
+                              child: Material(
+                                color: Colors.blueGrey, // button color
+                                child: InkWell(
+                                  splashColor:
+                                      Color(0xFFCFD8DC), // inkwell color
+                                  child: SizedBox(
+                                    width: 45,
+                                    height: 45,
+                                    child: Icon(Icons.stop),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      audioState = 'stopped';
+                                      position = Duration(milliseconds: 0);
+                                    });
+                                    advancedPlayer.stop();
+                                  },
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    audioState = 'stopped';
-                                    position = Duration(milliseconds: 0);
-                                  });
-                                  advancedPlayer.stop();
-                                },
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                      Slider(
+                        value: position?.inMilliseconds?.toDouble() ?? 0.0,
+                        activeColor: Colors.amber,
+                        inactiveColor: Color(0xFFCFD8DC),
+                        onChanged: (double value) {
+                          print('POSITION: $position');
+                          advancedPlayer
+                              .seek(Duration(milliseconds: value.toInt()));
+                          if (Platform.isAndroid) {
+                            setState(() {
+                              position = Duration(milliseconds: value.toInt());
+                            });
+                          }
+                          ;
+                        },
+                        min: 0.0,
+                        max: 60000,
+                      ),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0XFF455A64),
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(40),
+                      topRight: const Radius.circular(40),
                     ),
-                    Slider(
-                      value: position?.inMilliseconds?.toDouble() ?? 0.0,
-                      activeColor: Colors.amber,
-                      inactiveColor: Color(0xFFCFD8DC),
-                      onChanged: (double value) {
-                        print('POSITION: $position');
-                        advancedPlayer
-                            .seek(Duration(milliseconds: value.toInt()));
-                        if (Platform.isAndroid) {
-                          setState(() {
-                            position = Duration(milliseconds: value.toInt());
-                          });
-                        }
-                        ;
-                      },
-                      min: 0.0,
-                      max: 60000,
-                    ),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0XFF455A64),
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(40),
-                    topRight: const Radius.circular(40),
                   ),
                 ),
               ),
@@ -231,61 +238,35 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'The Basic Doctrine',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '4:48',
-                      style: kJMTalksListTilesTrailing,
-                    ),
-                    onTap: () => _onButtonPressed(),
+                  AudioListTile(
+                    'The Basic Doctrine',
+                    '4:48',
+                    _onButtonPressed,
+                    'for_meditation/The_Basic_Doctrine.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'To Set Our Minds On The Kingdom Of God',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '4:25',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'To Set Our Minds On The Kingdom Of God',
+                    '4:25',
+                    _onButtonPressed,
+                    'for_meditation/03 To Set Our Minds on the Kingdom of God.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'How Long Does It Take',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '3:34',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'How Long Does It Take',
+                    '3:34',
+                    _onButtonPressed,
+                    'for_meditation/04 How Long Does It Take.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'Leaving Self Behind',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '4:43',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'Leaving Self Behind',
+                    '4:43',
+                    _onButtonPressed,
+                    'for_meditation/05 Leaving Self Behind.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'Fullness Of Being',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '3:14',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'Fullness Of Being',
+                    '3:14',
+                    _onButtonPressed,
+                    'for_meditation/06 Fullness of Being.mp3',
                   ),
                 ],
               ),
@@ -393,6 +374,31 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class AudioListTile extends StatelessWidget {
+  final String title;
+  final String time;
+  final Function onTap;
+  final String audioURL;
+
+  AudioListTile(this.title, this.time, this.onTap, this.audioURL);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.play_arrow),
+      title: Text(
+        title,
+        style: kJMTalksListTilesTitle,
+      ),
+      trailing: Text(
+        time,
+        style: kJMTalksListTilesTrailing,
+      ),
+      onTap: () => onTap(audioURL),
     );
   }
 }

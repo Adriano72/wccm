@@ -94,6 +94,7 @@ Card _createResourceCard(
       onTap: () {
         _launchURL(resUrl);
       },
+      behavior: HitTestBehavior.translucent,
       child: Row(
         children: <Widget>[
           Flexible(
@@ -147,6 +148,7 @@ Card _createLocalAudioCard(IconData cardIcon, String title, String subTitle,
     color: Colors.white,
     elevation: 2,
     child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         Navigator.push(
           context,

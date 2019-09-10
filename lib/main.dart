@@ -58,7 +58,7 @@ class AfterSplash extends StatelessWidget {
       //debugShowMaterialGrid: true,
       theme: ThemeData(
         backgroundColor: kBackgroundColor,
-        canvasColor: Colors.transparent,
+        //canvasColor: Colors.transparent,
         brightness: Brightness.dark,
         primaryColor: Colors.blueGrey,
         accentColor: Colors.amber,
