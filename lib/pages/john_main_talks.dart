@@ -53,12 +53,6 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
       respectSilence: false,
     );
 
-    advancedPlayer.onDurationChanged.listen((Duration d) {
-//      print('Max duration MILLISECONDS: ${d.inMilliseconds}');
-//      print('Max duration RAW: $d');
-      if (mounted) setState(() => maxDuration = d);
-    });
-
     void _onTrackSelected(String url) {
       Future<void> future = showModalBottomSheet<void>(
         context: context,
@@ -75,18 +69,24 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
               String internalAudioState = audioState;
 
               advancedPlayer.onPlayerCompletion.listen((onData) {
-                if (mounted)
+                if (mounted) {
                   setState(() {
                     audioState = 'stopped';
                     position = Duration(milliseconds: 0);
-
-                    setSheetState(() {
-                      sliderValue = 0.0;
-                    });
                   });
-                setSheetState(() {
-                  internalAudioState = 'stopped';
-                });
+                  setSheetState(() {
+                    sliderValue = 0.0;
+                  });
+                  setSheetState(() {
+                    internalAudioState = 'stopped';
+                  });
+                }
+              });
+
+              advancedPlayer.onDurationChanged.listen((Duration d) {
+//      print('Max duration MILLISECONDS: ${d.inMilliseconds}');
+//      print('Max duration RAW: $d');
+                if (mounted) setState(() => maxDuration = d);
               });
 
               advancedPlayer.onAudioPositionChanged.listen((Duration p) {
@@ -129,34 +129,37 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                 onTap: () {
                                   if (audioState == 'playing') {
                                     advancedPlayer.pause();
-                                    if (mounted)
+                                    if (mounted) {
                                       setState(
                                         () {
                                           audioState = 'paused';
                                         },
                                       );
-                                    setSheetState(
-                                        () => internalAudioState = 'paused');
+                                      setSheetState(
+                                          () => internalAudioState = 'paused');
+                                    }
                                   } else if (audioState == 'paused') {
                                     advancedPlayer.resume();
-                                    if (mounted)
+                                    if (mounted) {
                                       setState(
                                         () {
                                           audioState = 'playing';
                                         },
                                       );
-                                    setSheetState(
-                                        () => internalAudioState = 'playing');
+                                      setSheetState(
+                                          () => internalAudioState = 'playing');
+                                    }
                                   } else if (audioState == 'stopped') {
                                     player.play(url);
-                                    if (mounted)
+                                    if (mounted) {
                                       setState(
                                         () {
                                           audioState = 'playing';
                                         },
                                       );
-                                    setSheetState(
-                                        () => internalAudioState = 'playing');
+                                      setSheetState(
+                                          () => internalAudioState = 'playing');
+                                    }
                                   }
                                 },
                               ),
@@ -173,17 +176,18 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                   child: Icon(Icons.stop),
                                 ),
                                 onTap: () {
-                                  if (mounted)
+                                  if (mounted) {
                                     setState(() {
                                       audioState = 'stopped';
                                       print("STOP TAPPED");
                                       position = Duration(milliseconds: 0);
                                     });
-                                  setSheetState(() {
-                                    internalAudioState = 'playing';
-                                    sliderValue = 0.0;
-                                  });
-                                  advancedPlayer.stop();
+                                    setSheetState(() {
+                                      internalAudioState = 'playing';
+                                      sliderValue = 0.0;
+                                    });
+                                    advancedPlayer.stop();
+                                  }
                                 },
                               ),
                             ),
@@ -201,10 +205,11 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                           print('POSITION: $position');
                           advancedPlayer
                               .seek(Duration(milliseconds: value.toInt()));
-
-                          setState(() {
-                            position = Duration(milliseconds: value.toInt());
-                          });
+                          if (mounted) {
+                            setState(() {
+                              position = Duration(milliseconds: value.toInt());
+                            });
+                          }
                         },
                         min: 0.0,
                         max: maxDuration.inMilliseconds.toDouble(),
@@ -219,6 +224,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
       );
       future.then((void value) {
         advancedPlayer.stop();
+      }).catchError((e) {
+        print('ERROR $e');
       });
     }
 
