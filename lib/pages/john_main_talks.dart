@@ -164,7 +164,6 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                   if (mounted) {
                                     setState(() {
                                       audioState = 'stopped';
-                                      print("STOP TAPPED");
                                       position = Duration(milliseconds: 0);
                                       internalAudioState = 'playing';
                                       sliderValue = 0.0;
