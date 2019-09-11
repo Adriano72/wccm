@@ -54,7 +54,7 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
     );
 
     void _onTrackSelected(String url) {
-      Future<void> future = showModalBottomSheet<void>(
+      showModalBottomSheet<void>(
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
@@ -62,7 +62,7 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
         backgroundColor: Color(0xFF455A64),
         builder: (BuildContext context) {
           return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setSheetState) {
+            builder: (BuildContext context, StateSetter setState) {
               player.load(url);
 
               double sliderValue = position.inMilliseconds.toDouble();
@@ -73,40 +73,28 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                   setState(() {
                     audioState = 'stopped';
                     position = Duration(milliseconds: 0);
-                  });
-                  setSheetState(() {
                     sliderValue = 0.0;
-                  });
-                  setSheetState(() {
                     internalAudioState = 'stopped';
                   });
                 }
               });
 
               advancedPlayer.onDurationChanged.listen((Duration d) {
-//      print('Max duration MILLISECONDS: ${d.inMilliseconds}');
-//      print('Max duration RAW: $d');
                 if (mounted) setState(() => maxDuration = d);
               });
 
               advancedPlayer.onAudioPositionChanged.listen((Duration p) {
-//                print('Current position RAW: $p');
-//                print('Current position MILLISECONDS: ${p.inMilliseconds}');
-//                print(
-//                    'Checked POSITION DOUBLE: ${p?.inMilliseconds?.toDouble()}');
-//                print('_______________________________________________');
                 if (mounted) {
-                  //print('Checked POSITION ${position?.inMilliseconds?.toDouble()}');
-                  setState(() => position = p);
-                  setSheetState(
-                      () => sliderValue = p?.inMilliseconds?.toDouble());
+                  try {
+                    setState(() => position = p);
+                    //sliderValue = p?.inMilliseconds?.toDouble();
+                  } catch (e) {}
                 }
               });
 
               return Container(
                 height: 180,
                 child: Column(
-                  //crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Padding(
                       padding:
@@ -133,10 +121,9 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                       setState(
                                         () {
                                           audioState = 'paused';
+                                          internalAudioState = 'paused';
                                         },
                                       );
-                                      setSheetState(
-                                          () => internalAudioState = 'paused');
                                     }
                                   } else if (audioState == 'paused') {
                                     advancedPlayer.resume();
@@ -144,10 +131,9 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                       setState(
                                         () {
                                           audioState = 'playing';
+                                          internalAudioState = 'playing';
                                         },
                                       );
-                                      setSheetState(
-                                          () => internalAudioState = 'playing');
                                     }
                                   } else if (audioState == 'stopped') {
                                     player.play(url);
@@ -155,10 +141,9 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                       setState(
                                         () {
                                           audioState = 'playing';
+                                          internalAudioState = 'playing';
                                         },
                                       );
-                                      setSheetState(
-                                          () => internalAudioState = 'playing');
                                     }
                                   }
                                 },
@@ -181,11 +166,10 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                       audioState = 'stopped';
                                       print("STOP TAPPED");
                                       position = Duration(milliseconds: 0);
-                                    });
-                                    setSheetState(() {
                                       internalAudioState = 'playing';
                                       sliderValue = 0.0;
                                     });
+
                                     advancedPlayer.stop();
                                   }
                                 },
@@ -221,8 +205,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
             },
           );
         },
-      );
-      future.then((void value) {
+      ).whenComplete(() {
+        advancedPlayer.onAudioPositionChanged.drain();
         advancedPlayer.stop();
       }).catchError((e) {
         print('ERROR $e');
