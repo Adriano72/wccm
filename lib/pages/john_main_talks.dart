@@ -214,20 +214,6 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                       fit: BoxFit.fitWidth,
                     ),
                   ),
-//                  Positioned(
-//                    bottom: 25.0,
-//                    left: 25,
-//                    child: Container(
-//                      child: Text(
-//                        'John Main Talks',
-//                        style: TextStyle(
-//                          color: Colors.white,
-//                          fontWeight: FontWeight.w600,
-//                          fontSize: 26,
-//                        ),
-//                      ),
-//                    ),
-//                  ),
                 ]),
               ),
             ),
