@@ -180,7 +180,6 @@ class _PrayersState extends State<Prayers> {
                           position = Duration(milliseconds: value.toInt());
                         });
                       }
-                      ;
                     },
                     min: 0.0,
                     max: 60000,

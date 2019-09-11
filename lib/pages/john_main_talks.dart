@@ -43,47 +43,45 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
   AudioPlayer advancedPlayer = AudioPlayer();
   @override
   Widget build(BuildContext context) {
+    String audioState = 'stopped';
+    Duration position = Duration(milliseconds: 0);
+    Duration maxDuration = Duration(milliseconds: 59000);
+
+    AudioCache player = AudioCache(
+      prefix: 'audio/',
+      fixedPlayer: advancedPlayer,
+      respectSilence: false,
+    );
+
+    advancedPlayer.onDurationChanged.listen((Duration d) {
+      print('Max duration: ${d.inMilliseconds}');
+      if (mounted) setState(() => maxDuration = d);
+    });
+
+    advancedPlayer.onAudioPositionChanged.listen((Duration p) {
+      print('Current position: ${p.inMilliseconds}');
+      if (mounted) setState(() => position = p);
+    });
+
+    advancedPlayer.onPlayerCompletion.listen((onData) {
+      if (mounted)
+        setState(() {
+          audioState = 'stopped';
+          position = Duration(milliseconds: 0);
+        });
+    });
     void _onTrackSelected(String url) {
       Future<void> future = showModalBottomSheet<void>(
-          context: context,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          backgroundColor: Color(0xFF455A64),
-          builder: (BuildContext context) {
-            AudioCache player = AudioCache(
-              prefix: 'audio/',
-              fixedPlayer: advancedPlayer,
-              respectSilence: false,
-            );
-            String audioState = 'stopped';
-            Duration position = Duration(milliseconds: 0);
-            Duration maxDuration = Duration(milliseconds: 59000);
-
-            advancedPlayer.onDurationChanged.listen((Duration d) {
-              print('Max duration: ${d.inMilliseconds}');
-              if (mounted) setState(() => maxDuration = d);
-            });
-
-            advancedPlayer.onPlayerCompletion.listen((onData) {
-              if (mounted)
-                setState(() {
-                  audioState = 'stopped';
-                  position = Duration(milliseconds: 0);
-                });
-            });
-
-            return StatefulBuilder(builder: (BuildContext context,
-                StateSetter setState /*You can rename this!*/) {
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        backgroundColor: Color(0xFF455A64),
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
               player.load(url);
-              //player.play(url);
-              Duration intPosition = position;
-              advancedPlayer.onAudioPositionChanged.listen((Duration p) {
-                print('Current position: ${p.inMilliseconds}');
-                if (mounted) {
-                  setState(() => intPosition = p);
-                }
-              });
+
               return Container(
                 height: 180,
                 child: Column(
@@ -164,7 +162,7 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Slider(
-                        value: intPosition?.inMilliseconds?.toDouble() ?? 0.0,
+                        value: position?.inMilliseconds?.toDouble() ?? 0.0,
                         activeColor: Colors.amber,
                         inactiveColor: Color(0xFFCFD8DC),
                         onChanged: (double value) {
@@ -172,15 +170,9 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                           advancedPlayer
                               .seek(Duration(milliseconds: value.toInt()));
 
-                          if (mounted) {
-                            setState(() {
-                              position = Duration(milliseconds: value.toInt());
-                            });
-                            setState(() {
-                              intPosition =
-                                  Duration(milliseconds: value.toInt());
-                            });
-                          }
+                          setState(() {
+                            position = Duration(milliseconds: value.toInt());
+                          });
                         },
                         min: 0.0,
                         max: maxDuration.inMilliseconds.toDouble(),
@@ -189,8 +181,10 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                   ],
                 ),
               );
-            });
-          });
+            },
+          );
+        },
+      );
       future.then((void value) {
         advancedPlayer.stop();
       });
