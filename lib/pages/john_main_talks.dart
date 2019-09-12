@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wccm/constants.dart';
-import 'dart:io';
 import 'dart:math' as math;
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
+import 'package:wccm/models/audio_data.dart';
 
 class JohnMainTalks extends StatefulWidget {
   @override
@@ -31,6 +31,23 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
   }
 
   void initState() {
+    advancedPlayer.onPlayerCompletion.listen((onData) {
+      Provider.of<AudioData>(context).setStoppedState();
+//            audioState = 'stopped';
+      Provider.of<AudioData>(context).rewindToZero();
+//            position = Duration(milliseconds: 0);
+    });
+
+    advancedPlayer.onDurationChanged.listen((Duration d) {
+      Provider.of<AudioData>(context).setAudioDuration(d);
+//            if (mounted) setState(() => maxDuration = d);
+      print("_______________________ ${Provider.of<AudioData>(context).audioDuration}");
+    });
+
+    advancedPlayer.onAudioPositionChanged.listen((Duration p) {
+      Provider.of<AudioData>(context).setAudioPosition(p);
+//            setState(() => position = p);
+    });
     super.initState();
   }
 
@@ -40,20 +57,19 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
     super.dispose();
   }
 
-  AudioPlayer advancedPlayer = AudioPlayer();
+  static AudioPlayer advancedPlayer = AudioPlayer();
+
+  AudioCache player = AudioCache(
+    prefix: 'audio/',
+    fixedPlayer: advancedPlayer,
+    respectSilence: false,
+  );
+
   @override
   Widget build(BuildContext context) {
-    String audioState = 'stopped';
-    Duration position = Duration(milliseconds: 0);
-    Duration maxDuration = Duration(milliseconds: 59000);
-
-    AudioCache player = AudioCache(
-      prefix: 'audio/',
-      fixedPlayer: advancedPlayer,
-      respectSilence: false,
-    );
-
     void _onTrackSelected(String url) {
+      player.load(url);
+
       showModalBottomSheet<void>(
         context: context,
         shape: RoundedRectangleBorder(
@@ -61,154 +77,88 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
         ),
         backgroundColor: Color(0xFF455A64),
         builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              player.load(url);
-
-              double sliderValue = position.inMilliseconds.toDouble();
-              String internalAudioState = audioState;
-
-              advancedPlayer.onPlayerCompletion.listen((onData) {
-                if (mounted) {
-                  setState(() {
-                    audioState = 'stopped';
-                    position = Duration(milliseconds: 0);
-                    sliderValue = 0.0;
-                    internalAudioState = 'stopped';
-                  });
-                }
-              });
-
-              advancedPlayer.onDurationChanged.listen((Duration d) {
-                if (mounted) setState(() => maxDuration = d);
-              });
-
-              advancedPlayer.onAudioPositionChanged.listen((Duration p) {
-                if (mounted) {
-                  try {
-                    setState(() => position = p);
-                    //sliderValue = p?.inMilliseconds?.toDouble();
-                  } catch (e) {}
-                }
-              });
-
-              return Container(
-                height: 180,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          ClipOval(
-                            child: Material(
-                              color: Colors.blueGrey, // button color
-                              child: InkWell(
-                                splashColor: Color(0xFFCFD8DC), // inkwell color
-                                child: SizedBox(
-                                  width: 45,
-                                  height: 45,
-                                  child: (audioState == 'playing')
-                                      ? Icon(Icons.pause)
-                                      : Icon(Icons.play_arrow),
-                                ),
-                                onTap: () {
-                                  if (audioState == 'playing') {
-                                    advancedPlayer.pause();
-                                    if (mounted) {
-                                      setState(
-                                        () {
-                                          audioState = 'paused';
-                                          internalAudioState = 'paused';
-                                        },
-                                      );
-                                    }
-                                  } else if (audioState == 'paused') {
-                                    advancedPlayer.resume();
-                                    if (mounted) {
-                                      setState(
-                                        () {
-                                          audioState = 'playing';
-                                          internalAudioState = 'playing';
-                                        },
-                                      );
-                                    }
-                                  } else if (audioState == 'stopped') {
-                                    player.play(url);
-                                    if (mounted) {
-                                      setState(
-                                        () {
-                                          audioState = 'playing';
-                                          internalAudioState = 'playing';
-                                        },
-                                      );
-                                    }
-                                  }
-                                },
-                              ),
+          return Container(
+            height: 180,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ClipOval(
+                        child: Material(
+                          color: Colors.blueGrey, // button color
+                          child: InkWell(
+                            splashColor: Color(0xFFCFD8DC), // inkwell color
+                            child: SizedBox(
+                              width: 45,
+                              height: 45,
+                              child: (Provider.of<AudioData>(context).audioState == 'playing')
+                                  ? Icon(Icons.pause)
+                                  : Icon(Icons.play_arrow),
                             ),
+                            onTap: () {
+                              if (Provider.of<AudioData>(context).audioState == 'playing') {
+                                advancedPlayer.pause();
+                                Provider.of<AudioData>(context).setPausedState();
+                              } else if (Provider.of<AudioData>(context).audioState == 'paused') {
+                                advancedPlayer.resume();
+                                Provider.of<AudioData>(context).setPlayingState();
+                              } else if (Provider.of<AudioData>(context).audioState == 'stopped') {
+                                player.play(url);
+                                Provider.of<AudioData>(context).setPlayingState();
+                              }
+                            },
                           ),
-                          ClipOval(
-                            child: Material(
-                              color: Colors.blueGrey, // button color
-                              child: InkWell(
-                                splashColor: Color(0xFFCFD8DC), // inkwell color
-                                child: SizedBox(
-                                  width: 45,
-                                  height: 45,
-                                  child: Icon(Icons.stop),
-                                ),
-                                onTap: () {
-                                  if (mounted) {
-                                    setState(() {
-                                      audioState = 'stopped';
-                                      position = Duration(milliseconds: 0);
-                                      internalAudioState = 'playing';
-                                      sliderValue = 0.0;
-                                    });
-
-                                    advancedPlayer.stop();
-                                  }
-                                },
-                              ),
+                        ),
+                      ),
+                      ClipOval(
+                        child: Material(
+                          color: Colors.blueGrey, // button color
+                          child: InkWell(
+                            splashColor: Color(0xFFCFD8DC), // inkwell color
+                            child: SizedBox(
+                              width: 45,
+                              height: 45,
+                              child: Icon(Icons.stop),
                             ),
+                            onTap: () {
+                              if (mounted) {
+                                Provider.of<AudioData>(context).setStoppedState();
+                                Provider.of<AudioData>(context).rewindToZero();
+                                advancedPlayer.stop();
+                              }
+                            },
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Slider(
-                        value: sliderValue,
-                        activeColor: Colors.amber,
-                        inactiveColor: Color(0xFFCFD8DC),
-                        onChanged: (double value) {
-                          print('POSITION: $position');
-                          advancedPlayer
-                              .seek(Duration(milliseconds: value.toInt()));
-                          if (mounted) {
-                            setState(() {
-                              position = Duration(milliseconds: value.toInt());
-                            });
-                          }
-                        },
-                        min: 0.0,
-                        max: maxDuration.inMilliseconds.toDouble(),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              );
-            },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Slider(
+                    value: Provider.of<AudioData>(context).audioPosition?.inMilliseconds?.toDouble(),
+                    activeColor: Colors.amber,
+                    inactiveColor: Color(0xFFCFD8DC),
+                    onChanged: (double value) {
+                      advancedPlayer.seek(Duration(milliseconds: value.toInt()));
+                      Provider.of<AudioData>(context).setAudioPosition(Duration(milliseconds: value.toInt()));
+                    },
+                    min: 0.0,
+                    max: Provider.of<AudioData>(context).audioDuration?.inMilliseconds?.toDouble(),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ).whenComplete(() {
         advancedPlayer.onAudioPositionChanged.drain();
         advancedPlayer.stop();
-      }).catchError((e) {
-        print('ERROR $e');
+        Provider.of<AudioData>(context).rewindToZero();
+        Provider.of<AudioData>(context).setStoppedState();
       });
     }
 
@@ -278,8 +228,7 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                 ],
               ),
             ),
-            makeHeader(
-                'Complete talks by John Main from his Collected Talks', false),
+            makeHeader('Complete talks by John Main from his Collected Talks', false),
             SliverList(
               delegate: SliverChildListDelegate(
                 [
@@ -426,8 +375,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get maxExtent => math.max(maxHeight, minHeight);
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new SizedBox.expand(child: child);
   }
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'constants.dart';
 import 'home.dart';
+import 'models/audio_data.dart';
 
 //import 'package:flutter/rendering.dart';
 // Import flutter helper library
@@ -11,10 +13,15 @@ void main() {
   //debugPaintBaselinesEnabled = true;
   //debugPaintPointersEnabled = true;
 
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MyApp(),
-  ));
+  runApp(
+    ChangeNotifierProvider<AudioData>(
+      builder: (context) => AudioData(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
