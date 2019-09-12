@@ -27,7 +27,7 @@ class _TimerRunState extends State<TimerRun> {
   String bellSound = 'LaurenceBowl.mp3';
   dynamic playerState;
 
-  double currentOpacity = 0.0;
+  double timeIndicatorOpacity = 0.0;
 
   @override
   void initState() {
@@ -40,7 +40,8 @@ class _TimerRunState extends State<TimerRun> {
       print('Current player state: $s');
       if (mounted) setState(() => playerState = s);
       if (!timerStarted &&
-          (playerState == AudioPlayerState.COMPLETED || playerState == AudioPlayerState.STOPPED)) {
+          (playerState == AudioPlayerState.COMPLETED ||
+              playerState == AudioPlayerState.STOPPED)) {
         //Wakelock.disable();
       }
     });
@@ -64,7 +65,7 @@ class _TimerRunState extends State<TimerRun> {
       isPreparationTime = false;
       if (mounted)
         setState(() {
-          currentOpacity = 1.0;
+          timeIndicatorOpacity = 1.0;
           preparationNoticeVisibility = 0.0;
           beginEndSessionNotification = 'Session completed!';
         });
@@ -113,7 +114,8 @@ class _TimerRunState extends State<TimerRun> {
   }
 
   static AudioPlayer advancedPlayer = AudioPlayer();
-  AudioCache player = AudioCache(respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
+  AudioCache player = AudioCache(
+      respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +142,7 @@ class _TimerRunState extends State<TimerRun> {
               AnimatedOpacity(
                 duration: const Duration(seconds: 5),
                 curve: Curves.easeInCirc,
-                opacity: currentOpacity,
+                opacity: timeIndicatorOpacity,
                 child: CircularPercentIndicator(
                   circularStrokeCap: CircularStrokeCap.round,
                   radius: 180.0,
