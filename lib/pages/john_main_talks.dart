@@ -232,93 +232,53 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'Being Restored To Ourselves',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '18:14',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'Being Restored To Ourselves',
+                    '18:14',
+                    _onTrackSelected,
+                    'complete/01 - Being Restored To Ourselves.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'In Reverence In Your Hearts',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '15:26',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'In Reverence In Your Hearts',
+                    '15:26',
+                    _onTrackSelected,
+                    'complete/01 - In Reverence In Your Hearts.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'Making Progress',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '17:15',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'Making Progress',
+                    '17:15',
+                    _onTrackSelected,
+                    'complete/01 - Making Progress.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'Peace',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '16:19',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'Peace',
+                    '16:19',
+                    _onTrackSelected,
+                    'complete/01 - Peace.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'Still A Beginner',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '15:05',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'Still A Beginner',
+                    '15:05',
+                    _onTrackSelected,
+                    'complete/01 - Still A Beginner.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'The Art Of Unlearning',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '16:57',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'The Art Of Unlearning',
+                    '16:57',
+                    _onTrackSelected,
+                    'complete/01 - The Art Of Unlearning.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'The Way Of The Mantra',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '18:04',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'The Way Of The Mantra',
+                    '18:04',
+                    _onTrackSelected,
+                    'complete/01 - The Way Of The Mantra.mp3',
                   ),
-                  ListTile(
-                    leading: Icon(Icons.play_arrow),
-                    title: Text(
-                      'Baptism : Water And Spirit',
-                      style: kJMTalksListTilesTitle,
-                    ),
-                    trailing: Text(
-                      '19:27',
-                      style: kJMTalksListTilesTrailing,
-                    ),
+                  AudioListTile(
+                    'Baptism : Water And Spirit',
+                    '19:27',
+                    _onTrackSelected,
+                    'complete/02 - Baptism _ Water And Spirit.mp3',
                   ),
 //                  ListTile(),
 //                  ListTile(),
