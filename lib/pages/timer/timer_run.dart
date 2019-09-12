@@ -24,8 +24,10 @@ class _TimerRunState extends State<TimerRun> {
   double preparationNoticeVisibility = 1.0;
   String beginEndSessionNotification = 'Session starting in a few seconds...';
   Timer timer;
-  String bellSound = 'tibetan-bowl.mp3';
+  String bellSound = 'LaurenceBowl.mp3';
   dynamic playerState;
+
+  double currentOpacity = 0.0;
 
   @override
   void initState() {
@@ -38,8 +40,7 @@ class _TimerRunState extends State<TimerRun> {
       print('Current player state: $s');
       if (mounted) setState(() => playerState = s);
       if (!timerStarted &&
-          (playerState == AudioPlayerState.COMPLETED ||
-              playerState == AudioPlayerState.STOPPED)) {
+          (playerState == AudioPlayerState.COMPLETED || playerState == AudioPlayerState.STOPPED)) {
         //Wakelock.disable();
       }
     });
@@ -63,6 +64,7 @@ class _TimerRunState extends State<TimerRun> {
       isPreparationTime = false;
       if (mounted)
         setState(() {
+          currentOpacity = 1.0;
           preparationNoticeVisibility = 0.0;
           beginEndSessionNotification = 'Session completed!';
         });
@@ -111,8 +113,7 @@ class _TimerRunState extends State<TimerRun> {
   }
 
   static AudioPlayer advancedPlayer = AudioPlayer();
-  AudioCache player = AudioCache(
-      respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
+  AudioCache player = AudioCache(respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
 
   @override
   Widget build(BuildContext context) {
@@ -136,19 +137,24 @@ class _TimerRunState extends State<TimerRun> {
                   ),
                 ),
               ),
-              CircularPercentIndicator(
-                circularStrokeCap: CircularStrokeCap.round,
-                radius: 180.0,
-                lineWidth: 12.0,
-                percent: timePercent,
-                center: Text(
-                  formatTime(medDuration),
-                  style: TextStyle(
-                    fontSize: 28,
-                    //fontWeight: FontWeight.bold,
+              AnimatedOpacity(
+                duration: const Duration(seconds: 5),
+                curve: Curves.easeInCirc,
+                opacity: currentOpacity,
+                child: CircularPercentIndicator(
+                  circularStrokeCap: CircularStrokeCap.round,
+                  radius: 180.0,
+                  lineWidth: 12.0,
+                  percent: timePercent,
+                  center: Text(
+                    formatTime(medDuration),
+                    style: TextStyle(
+                      fontSize: 28,
+                      //fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  progressColor: Colors.amberAccent,
                 ),
-                progressColor: Colors.amberAccent,
               ),
               Opacity(
                 opacity: preparationNoticeVisibility,
