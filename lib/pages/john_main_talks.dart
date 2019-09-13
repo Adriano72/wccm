@@ -5,13 +5,17 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:wccm/models/audio_data.dart';
+import 'package:flutter/animation.dart';
 
 class JohnMainTalks extends StatefulWidget {
   @override
   _JohnMainTalksState createState() => _JohnMainTalksState();
 }
 
-class _JohnMainTalksState extends State<JohnMainTalks> {
+class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProviderStateMixin {
+  Animation<Color> animation;
+  AnimationController controller;
+
   SliverPersistentHeader makeHeader(String headerText, bool pinned) {
     return SliverPersistentHeader(
       pinned: pinned,
@@ -48,12 +52,26 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
       Provider.of<AudioData>(context).setAudioPosition(p);
 //            setState(() => position = p);
     });
+    controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    final CurvedAnimation curve = CurvedAnimation(parent: controller, curve: Curves.linear);
+    animation = ColorTween(begin: Colors.black87, end: Colors.amberAccent).animate(curve);
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.forward();
+      }
+      setState(() {});
+    });
+    controller.forward();
     super.initState();
   }
 
   @override
   void dispose() {
     //advancedPlayer.stop();
+    Provider.of<AudioData>(context).rewindToZero();
+    controller.dispose();
     super.dispose();
   }
 
@@ -67,7 +85,7 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
 
   @override
   Widget build(BuildContext context) {
-    void _onTrackSelected(String url) {
+    void _onTrackSelected(String url, String audioTitle) {
       player.load(url);
 
       showModalBottomSheet<void>(
@@ -78,35 +96,66 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
         backgroundColor: Color(0xFF455A64),
         builder: (BuildContext context) {
           return Container(
-            height: 180,
+            height: 210,
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+                  padding: const EdgeInsets.only(left: 40, right: 40, top: 30, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
+                      Text(
+                        audioTitle,
+                        style: TextStyle(),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/JMTalksLogo.jpg',
+                        height: 40,
+                      ),
                       ClipOval(
                         child: Material(
                           color: Colors.blueGrey, // button color
                           child: InkWell(
                             splashColor: Color(0xFFCFD8DC), // inkwell color
                             child: SizedBox(
-                              width: 45,
-                              height: 45,
+                              width: 40,
+                              height: 40,
                               child: (Provider.of<AudioData>(context).audioState == 'playing')
-                                  ? Icon(Icons.pause)
-                                  : Icon(Icons.play_arrow),
+                                  ? AnimatedBuilder(
+                                      animation: animation,
+                                      builder: (BuildContext context, Widget child) {
+                                        return new Container(
+                                          child: Icon(
+                                            Icons.play_arrow,
+                                            color: animation.value,
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : Icon(
+                                      Icons.play_arrow,
+                                    ),
                             ),
                             onTap: () {
                               if (Provider.of<AudioData>(context).audioState == 'playing') {
                                 advancedPlayer.pause();
+                                controller.stop();
                                 Provider.of<AudioData>(context).setPausedState();
                               } else if (Provider.of<AudioData>(context).audioState == 'paused') {
                                 advancedPlayer.resume();
+                                controller.forward();
                                 Provider.of<AudioData>(context).setPlayingState();
                               } else if (Provider.of<AudioData>(context).audioState == 'stopped') {
                                 player.play(url);
+                                controller.forward();
                                 Provider.of<AudioData>(context).setPlayingState();
                               }
                             },
@@ -119,8 +168,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                           child: InkWell(
                             splashColor: Color(0xFFCFD8DC), // inkwell color
                             child: SizedBox(
-                              width: 45,
-                              height: 45,
+                              width: 40,
+                              height: 40,
                               child: Icon(Icons.stop),
                             ),
                             onTap: () {
@@ -128,6 +177,7 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
                                 Provider.of<AudioData>(context).setStoppedState();
                                 Provider.of<AudioData>(context).rewindToZero();
                                 advancedPlayer.stop();
+                                controller.stop();
                               }
                             },
                           ),
@@ -157,6 +207,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> {
       ).whenComplete(() {
         advancedPlayer.onAudioPositionChanged.drain();
         advancedPlayer.stop();
+        advancedPlayer.release();
+        controller.stop();
         Provider.of<AudioData>(context).rewindToZero();
         Provider.of<AudioData>(context).setStoppedState();
       });
@@ -316,7 +368,7 @@ class AudioListTile extends StatelessWidget {
         time,
         style: kJMTalksListTilesTrailing,
       ),
-      onTap: () => onTap(audioURL),
+      onTap: () => onTap(audioURL, title),
     );
   }
 }
