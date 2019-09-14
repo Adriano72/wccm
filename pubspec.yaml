@@ -1,5 +1,5 @@
 name: wccm
-description: A new Flutter project.
+description: WCCM
 
 
 version: 1.4.0+6
@@ -40,6 +40,7 @@ flutter:
   assets:
   - assets/images/
   - assets/sounds/
+  - assets/bowls/
   - assets/audio/for_meditation/
   - assets/audio/complete/
 

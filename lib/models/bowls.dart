@@ -8,36 +8,38 @@ class Bowl {
 List<Bowl> bowls = [
   Bowl(
     name: 'Fr Laurence Bowl',
-    url: 'assets/bowls/LaurenceBowl.mp3',
+    url: 'LaurenceBowl.mp3',
   ),
   Bowl(
-      name: 'Singing Bowl - High', url: 'assets/bowls/HighToneSingingBowl.mp3'),
+    name: 'Singing Bowl - High',
+    url: 'HighToneSingingBowl.mp3',
+  ),
   Bowl(
     name: 'Big Singing Bowl',
-    url: 'assets/bowls/BigSingingBowl.mp3',
+    url: 'BigSingingBowl.mp3',
   ),
   Bowl(
-    name: 'Forged Singing Bowl',
-    url: 'assets/bowls/ForgedSingingBowl.mp3',
+    name: 'Singing Bowl Hit Rub',
+    url: 'SingingBowlHitRub.mp3',
   ),
   Bowl(
     name: 'Medium Singing Bowl',
-    url: 'assets/bowls/MediumSingingBowl.mp3',
+    url: 'MediumSingingBowl.mp3',
   ),
   Bowl(
     name: 'Tibetan Metal Bowl Soft Mallet',
-    url: 'assets/bowls/TibetanMetalBowlSoftMallet.mp3',
+    url: 'TibetanMetalBowlSoftMallet.mp3',
   ),
   Bowl(
-    name: 'Divine Himalayan Bowl - High',
-    url: 'assets/bowls/DivineHimalayanBowl1.mp3',
+    name: 'Divine Himalayan Bowl High',
+    url: 'DivineHimalayanBowl1.mp3',
   ),
   Bowl(
-    name: 'Divine Himalayan Bowl - Low',
-    url: 'assets/bowls/DivineHimalayanBowl2.mp3',
+    name: 'Divine Himalayan Bowl Low',
+    url: 'DivineHimalayanBowl2.mp3',
   ),
   Bowl(
     name: 'Gong Crash',
-    url: 'assets/bowls/Gong.mp3',
+    url: 'Gong.mp3',
   ),
 ];

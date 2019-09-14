@@ -8,8 +8,9 @@ import 'package:wccm/constants.dart';
 
 class TimerRun extends StatefulWidget {
   final Duration meditationTime;
+  final String soundUrl;
 
-  TimerRun({@required this.meditationTime});
+  TimerRun({@required this.meditationTime, @required this.soundUrl});
 
   @override
   _TimerRunState createState() => _TimerRunState();
@@ -24,7 +25,7 @@ class _TimerRunState extends State<TimerRun> {
   double preparationNoticeVisibility = 1.0;
   String beginEndSessionNotification = 'Session starting in a few seconds...';
   Timer timer;
-  String bellSound = '';
+  String bellSound = 'LaurenceBowl.mp3';
   dynamic playerState;
 
   double timeIndicatorOpacity = 0.0;
@@ -32,6 +33,7 @@ class _TimerRunState extends State<TimerRun> {
   @override
   void initState() {
     medDuration = widget.meditationTime;
+    bellSound = widget.soundUrl;
     player.load(bellSound);
     // Checks if the AudioPlayer is playing. States available are AudioPlayerState.PLAYING (STOPPED or COMPLETED)
     // and disable screen lock is audio is STOPPED or COMPLETED and timerStarted is false (timer is not running)
@@ -99,7 +101,6 @@ class _TimerRunState extends State<TimerRun> {
   void dispose() {
     print("DISPOSE*********");
     Wakelock.disable();
-    advancedPlayer.stop();
     super.dispose();
   }
 
@@ -115,7 +116,7 @@ class _TimerRunState extends State<TimerRun> {
 
   static AudioPlayer advancedPlayer = AudioPlayer();
   AudioCache player = AudioCache(
-      respectSilence: false, prefix: 'sounds/', fixedPlayer: advancedPlayer);
+      respectSilence: false, prefix: 'bowls/', fixedPlayer: advancedPlayer);
 
   @override
   Widget build(BuildContext context) {

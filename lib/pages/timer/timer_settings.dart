@@ -6,6 +6,8 @@ import 'package:wccm/pages/timer/timer_run.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:wccm/constants.dart';
 import 'package:wccm/models/bowls.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class TimerSettings extends StatefulWidget {
   @override
@@ -19,20 +21,36 @@ class _TimerSettingsState extends State<TimerSettings> {
   bool _updatedFromPreferences = false;
   int medHours = 0;
   int medMinutes = 0;
+  String audioState = 'stopped';
+  String selectedSound = 'LaurenceBowl.mp3';
+  int initialBellSelectorPage = 0;
 
   @override
   void initState() {
+    advancedPlayer.stop();
     super.initState();
+    for (Bowl track in bowls) {
+      player.load(track.url);
+    }
     _getStoredMedTime().then((result) {
       setState(() {
         _medDuration = result;
         _updatedFromPreferences = true;
       });
     });
+
+    _getStoredBellSound().then((result) {
+      setState(() {
+        selectedSound = result[0];
+        initialBellSelectorPage = result[1];
+      });
+    });
   }
 
   @override
   void dispose() {
+    advancedPlayer.stop();
+    advancedPlayer.dispose();
     super.dispose();
   }
 
@@ -50,14 +68,44 @@ class _TimerSettingsState extends State<TimerSettings> {
     await prefs.setInt('timerPresetsMinutes', minutes.remainder(60));
   }
 
+  void _storeBellSound(String url, int pageIndex) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedBellSound', url);
+    await prefs.setInt('initialBellSelectorPage', pageIndex);
+  }
+
   Future<Duration> _getStoredMedTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int storedMedTimeHour = (prefs.getInt('timerPresetHours'));
     int storedMedTimeMinutes = (prefs.getInt('timerPresetsMinutes'));
-
     return Duration(
         hours: storedMedTimeHour ?? 0, minutes: storedMedTimeMinutes ?? 20);
     ;
+  }
+
+  Future<List> _getStoredBellSound() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String storedBellSound = (prefs.getString('selectedBellSound'));
+    int storedCarouselPage = (prefs.getInt('initialBellSelectorPage'));
+    return [storedBellSound, storedCarouselPage];
+    ;
+  }
+
+  static AudioPlayer advancedPlayer = AudioPlayer();
+  AudioCache player = AudioCache(
+    prefix: 'bowls/',
+    fixedPlayer: advancedPlayer,
+    respectSilence: false,
+  );
+
+  _onSoundChanged(int index) {
+    advancedPlayer.stop();
+    setState(() {
+      audioState = 'stopped';
+      selectedSound = bowls[index].url;
+    });
+    _storeBellSound(bowls[index].url, index);
+    print('SELECTED SOUND IS: $selectedSound');
   }
 
   @override
@@ -68,17 +116,32 @@ class _TimerSettingsState extends State<TimerSettings> {
       );
     }
     var carouselSlider = CarouselSlider(
+      initialPage: initialBellSelectorPage ?? 0,
       enlargeCenterPage: true,
       enableInfiniteScroll: false,
       viewportFraction: 0.50,
       aspectRatio: 9 / 2,
+      onPageChanged: _onSoundChanged,
       items: bowls.map(
         (item) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: RaisedButton(
               color: Colors.blueGrey,
-              onPressed: () {},
+              onPressed: () {
+                if (audioState == 'stopped') {
+                  //player.load(item.url);
+                  player.play(item.url);
+                  setState(() {
+                    audioState = 'playing';
+                  });
+                } else {
+                  advancedPlayer.stop();
+                  setState(() {
+                    audioState = 'stopped';
+                  });
+                }
+              },
               textColor: Colors.white,
               padding: const EdgeInsets.all(15.0),
               child: Text(item.name,
@@ -157,13 +220,13 @@ class _TimerSettingsState extends State<TimerSettings> {
               color: Colors.amber,
               elevation: 5,
               onPressed: () {
-//                  carouselSlider.animateToPage(3,
-//                      duration: Duration(seconds: 1), curve: Curves.decelerate);
+                advancedPlayer.stop();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => TimerRun(
                       meditationTime: _medDuration,
+                      soundUrl: selectedSound,
                     ),
                   ),
                 );
