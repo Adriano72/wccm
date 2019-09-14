@@ -12,7 +12,8 @@ class JohnMainTalks extends StatefulWidget {
   _JohnMainTalksState createState() => _JohnMainTalksState();
 }
 
-class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProviderStateMixin {
+class _JohnMainTalksState extends State<JohnMainTalks>
+    with SingleTickerProviderStateMixin {
   Animation<Color> animation;
   AnimationController controller;
 
@@ -45,16 +46,19 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
     advancedPlayer.onDurationChanged.listen((Duration d) {
       Provider.of<AudioData>(context).setAudioDuration(d);
 //            if (mounted) setState(() => maxDuration = d);
-      print("_______________________ ${Provider.of<AudioData>(context).audioDuration}");
+//      Provider.of<AudioData>(context).rewindToZero();
     });
 
     advancedPlayer.onAudioPositionChanged.listen((Duration p) {
       Provider.of<AudioData>(context).setAudioPosition(p);
 //            setState(() => position = p);
     });
-    controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-    final CurvedAnimation curve = CurvedAnimation(parent: controller, curve: Curves.linear);
-    animation = ColorTween(begin: Colors.black87, end: Colors.amberAccent).animate(curve);
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    final CurvedAnimation curve =
+        CurvedAnimation(parent: controller, curve: Curves.linear);
+    animation = ColorTween(begin: Colors.black87, end: Colors.amberAccent)
+        .animate(curve);
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         controller.reverse();
@@ -70,7 +74,6 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
   @override
   void dispose() {
     //advancedPlayer.stop();
-    Provider.of<AudioData>(context).rewindToZero();
     controller.dispose();
     super.dispose();
   }
@@ -100,7 +103,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 40, right: 40, top: 30, bottom: 10),
+                  padding: const EdgeInsets.only(
+                      left: 35, right: 35, top: 30, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -112,7 +116,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -128,10 +133,13 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
                             child: SizedBox(
                               width: 40,
                               height: 40,
-                              child: (Provider.of<AudioData>(context).audioState == 'playing')
+                              child: (Provider.of<AudioData>(context)
+                                          .audioState ==
+                                      'playing')
                                   ? AnimatedBuilder(
                                       animation: animation,
-                                      builder: (BuildContext context, Widget child) {
+                                      builder:
+                                          (BuildContext context, Widget child) {
                                         return new Container(
                                           child: Icon(
                                             Icons.play_arrow,
@@ -145,18 +153,26 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
                                     ),
                             ),
                             onTap: () {
-                              if (Provider.of<AudioData>(context).audioState == 'playing') {
+                              if (Provider.of<AudioData>(context).audioState ==
+                                  'playing') {
                                 advancedPlayer.pause();
                                 controller.stop();
-                                Provider.of<AudioData>(context).setPausedState();
-                              } else if (Provider.of<AudioData>(context).audioState == 'paused') {
+                                Provider.of<AudioData>(context)
+                                    .setPausedState();
+                              } else if (Provider.of<AudioData>(context)
+                                      .audioState ==
+                                  'paused') {
                                 advancedPlayer.resume();
                                 controller.forward();
-                                Provider.of<AudioData>(context).setPlayingState();
-                              } else if (Provider.of<AudioData>(context).audioState == 'stopped') {
+                                Provider.of<AudioData>(context)
+                                    .setPlayingState();
+                              } else if (Provider.of<AudioData>(context)
+                                      .audioState ==
+                                  'stopped') {
                                 player.play(url);
                                 controller.forward();
-                                Provider.of<AudioData>(context).setPlayingState();
+                                Provider.of<AudioData>(context)
+                                    .setPlayingState();
                               }
                             },
                           ),
@@ -174,7 +190,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
                             ),
                             onTap: () {
                               if (mounted) {
-                                Provider.of<AudioData>(context).setStoppedState();
+                                Provider.of<AudioData>(context)
+                                    .setStoppedState();
                                 Provider.of<AudioData>(context).rewindToZero();
                                 advancedPlayer.stop();
                                 controller.stop();
@@ -189,15 +206,23 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Slider(
-                    value: Provider.of<AudioData>(context).audioPosition?.inMilliseconds?.toDouble(),
+                    value: Provider.of<AudioData>(context)
+                        .audioPosition
+                        ?.inMilliseconds
+                        ?.toDouble(),
                     activeColor: Colors.amber,
                     inactiveColor: Color(0xFFCFD8DC),
                     onChanged: (double value) {
-                      advancedPlayer.seek(Duration(milliseconds: value.toInt()));
-                      Provider.of<AudioData>(context).setAudioPosition(Duration(milliseconds: value.toInt()));
+                      advancedPlayer
+                          .seek(Duration(milliseconds: value.toInt()));
+                      Provider.of<AudioData>(context).setAudioPosition(
+                          Duration(milliseconds: value.toInt()));
                     },
                     min: 0.0,
-                    max: Provider.of<AudioData>(context).audioDuration?.inMilliseconds?.toDouble(),
+                    max: Provider.of<AudioData>(context)
+                        .audioDuration
+                        ?.inMilliseconds
+                        ?.toDouble(),
                   ),
                 ),
               ],
@@ -280,7 +305,8 @@ class _JohnMainTalksState extends State<JohnMainTalks> with SingleTickerProvider
                 ],
               ),
             ),
-            makeHeader('Complete talks by John Main from his Collected Talks', false),
+            makeHeader(
+                'Complete talks by John Main from his Collected Talks', false),
             SliverList(
               delegate: SliverChildListDelegate(
                 [
@@ -387,7 +413,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get maxExtent => math.max(maxHeight, minHeight);
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new SizedBox.expand(child: child);
   }
 

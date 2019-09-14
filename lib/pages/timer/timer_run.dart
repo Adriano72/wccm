@@ -24,7 +24,7 @@ class _TimerRunState extends State<TimerRun> {
   double preparationNoticeVisibility = 1.0;
   String beginEndSessionNotification = 'Session starting in a few seconds...';
   Timer timer;
-  String bellSound = 'LaurenceBowl.mp3';
+  String bellSound = '';
   dynamic playerState;
 
   double timeIndicatorOpacity = 0.0;

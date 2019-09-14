@@ -3,7 +3,9 @@ import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:wccm/pages/timer/timer_run.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:wccm/constants.dart';
+import 'package:wccm/models/bowls.dart';
 
 class TimerSettings extends StatefulWidget {
   @override
@@ -65,74 +67,114 @@ class _TimerSettingsState extends State<TimerSettings> {
         decoration: BoxDecoration(color: Colors.blueGrey),
       );
     }
+    var carouselSlider = CarouselSlider(
+      enlargeCenterPage: true,
+      enableInfiniteScroll: false,
+      viewportFraction: 0.50,
+      aspectRatio: 9 / 2,
+      items: bowls.map(
+        (item) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              color: Colors.blueGrey,
+              onPressed: () {},
+              textColor: Colors.white,
+              padding: const EdgeInsets.all(15.0),
+              child: Text(item.name,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                  )),
+              elevation: 5,
+            ),
+          );
+        },
+      ).toList(),
+    );
+
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            /*Image.asset('assets/images/bowl.png',
-                width: MediaQuery.of(context).size.width * 0.3),*/
-
-            SafeArea(
-              child: Text(
-                'Session time',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white70,
-                  height: 1.3,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          /*Image.asset('assets/images/bowl.png',
+              width: MediaQuery.of(context).size.width * 0.3),*/
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              'Bell Sound',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white70,
+                height: 1.3,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            Flexible(
-              child: DurationPicker(
-                width: 240,
-                duration: _medDuration,
-                snapToMins: 1.0,
-                onChange: (val) {
-                  try {
-                    if (val != null) {
-                      this.setState(
-                        () {
-                          _medDuration = val;
-                          medHours = _medDuration.inHours;
-                          medMinutes = _medDuration.inMinutes.remainder(60);
-                        },
-                      );
-                    } else {
-                      this.setState(
-                        () => _medDuration = Duration(minutes: 1),
-                      );
-                    }
-                    _storeMedTime(_medDuration.inHours, _medDuration.inMinutes);
-                  } catch (e) {
-                    print(e);
+          ),
+          carouselSlider,
+          Text(
+            'Session time',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white70,
+              height: 1.3,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Flexible(
+            child: DurationPicker(
+              width: 240,
+              duration: _medDuration,
+              snapToMins: 1.0,
+              onChange: (val) {
+                try {
+                  if (val != null) {
+                    this.setState(
+                      () {
+                        _medDuration = val;
+                        medHours = _medDuration.inHours;
+                        medMinutes = _medDuration.inMinutes.remainder(60);
+                      },
+                    );
+                  } else {
+                    this.setState(
+                      () => _medDuration = Duration(minutes: 1),
+                    );
                   }
-                },
+                  _storeMedTime(_medDuration.inHours, _medDuration.inMinutes);
+                } catch (e) {
+                  print(e);
+                }
+              },
+            ),
+          ),
+          Flexible(
+            child: RaisedButton(
+              color: Colors.amber,
+              elevation: 5,
+              onPressed: () {
+//                  carouselSlider.animateToPage(3,
+//                      duration: Duration(seconds: 1), curve: Curves.decelerate);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TimerRun(
+                      meditationTime: _medDuration,
+                    ),
+                  ),
+                );
+              },
+              child: Text(
+                "Start",
+                style: kButtonTextStyle,
               ),
             ),
-            Flexible(
-              child: RaisedButton(
-                color: Colors.amber,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TimerRun(
-                                meditationTime: _medDuration,
-                              )));
-                },
-                child: Text(
-                  "Start",
-                  style: kButtonTextStyle,
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

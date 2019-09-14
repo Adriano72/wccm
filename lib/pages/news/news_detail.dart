@@ -53,6 +53,7 @@ class NewsDetail extends StatelessWidget {
         child: Row(
           children: <Widget>[
             GestureDetector(
+              behavior: HitTestBehavior.translucent,
               child: Text(
                 (news.link == null) ? '' : 'More info',
                 style: kNewsLinkStyle,
