@@ -34,7 +34,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return new SplashScreen(
+    return SplashScreen(
       seconds: 3,
       navigateAfterSeconds: AfterSplash(),
       title: Text(
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         height: 130.0,
       ),
       gradientBackground: LinearGradient(
-          colors: [Colors.blueGrey, Colors.teal],
+          colors: [Color(0xFF455A64), Colors.blueGrey],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight),
       backgroundColor: Colors.white,

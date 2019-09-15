@@ -3,17 +3,20 @@ import 'dart:io';
 import 'package:wccm/constants.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/animation.dart';
 
 class Prayers extends StatefulWidget {
   @override
   _PrayersState createState() => _PrayersState();
 }
 
-class _PrayersState extends State<Prayers> {
+class _PrayersState extends State<Prayers> with SingleTickerProviderStateMixin {
   String introAudio = 'intro_med_forapp_cbr.mp3';
   String audioState = 'stopped';
   Duration position = Duration(milliseconds: 0);
   Duration duration = Duration(milliseconds: 59000);
+  Animation<Color> animation;
+  AnimationController controller;
 
   @override
   void initState() {
@@ -33,16 +36,32 @@ class _PrayersState extends State<Prayers> {
     });
 
     advancedPlayer.onAudioPositionChanged.listen((Duration p) {
-      print('Current position: ${p.inMilliseconds}');
+      //print('Current position: ${p.inMilliseconds}');
       if (mounted) setState(() => position = p);
     });
-    //getAudioDuration();
+
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    final CurvedAnimation curve =
+        CurvedAnimation(parent: controller, curve: Curves.linear);
+    animation = ColorTween(begin: Colors.black87, end: Colors.amberAccent)
+        .animate(curve);
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.forward();
+      }
+      setState(() {});
+    });
+    controller.forward();
     super.initState();
   }
 
   @override
   void dispose() {
     advancedPlayer.stop();
+    controller.dispose();
     super.dispose();
   }
 
@@ -114,12 +133,24 @@ class _PrayersState extends State<Prayers> {
                                 width: 56,
                                 height: 56,
                                 child: (audioState == 'playing')
-                                    ? Icon(Icons.pause)
+                                    ? AnimatedBuilder(
+                                        animation: animation,
+                                        builder: (BuildContext context,
+                                            Widget child) {
+                                          return new Container(
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              color: animation.value,
+                                            ),
+                                          );
+                                        },
+                                      )
                                     : Icon(Icons.play_arrow),
                               ),
                               onTap: () {
                                 if (audioState == 'playing') {
                                   advancedPlayer.pause();
+                                  controller.stop();
                                   setState(
                                     () {
                                       audioState = 'paused';
@@ -127,6 +158,7 @@ class _PrayersState extends State<Prayers> {
                                   );
                                 } else if (audioState == 'paused') {
                                   advancedPlayer.resume();
+                                  controller.forward();
                                   setState(
                                     () {
                                       audioState = 'playing';
@@ -134,6 +166,7 @@ class _PrayersState extends State<Prayers> {
                                   );
                                 } else if (audioState == 'stopped') {
                                   player.play(introAudio);
+                                  controller.forward();
                                   setState(
                                     () {
                                       audioState = 'playing';
@@ -160,6 +193,7 @@ class _PrayersState extends State<Prayers> {
                                   position = Duration(milliseconds: 0);
                                 });
                                 advancedPlayer.stop();
+                                controller.stop();
                               },
                             ),
                           ),

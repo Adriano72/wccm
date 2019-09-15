@@ -6,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:wccm/models/audio_data.dart';
 import 'package:flutter/animation.dart';
+import 'package:flutter_device_type/flutter_device_type.dart';
 
 class JohnMainTalks extends StatefulWidget {
   @override
@@ -254,13 +255,13 @@ class _JohnMainTalksState extends State<JohnMainTalks>
                 ),
               ),
               pinned: true,
-              expandedHeight: 200.0,
+              expandedHeight: Device.get().isTablet ? 500 : 200.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Stack(children: <Widget>[
                   Positioned.fill(
                     child: Image.asset(
                       'assets/images/JMGardenStandingOverlayed.jpg',
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ]),

@@ -117,7 +117,8 @@ class _TimerSettingsState extends State<TimerSettings> {
       enlargeCenterPage: true,
       enableInfiniteScroll: false,
       viewportFraction: 0.50,
-      aspectRatio: 9 / 2,
+      //aspectRatio: 9 / 2,
+      height: 85,
       onPageChanged: _onSoundChanged,
       items: bowls.map(
         (item) {
@@ -156,7 +157,7 @@ class _TimerSettingsState extends State<TimerSettings> {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /*Image.asset('assets/images/bowl.png',
@@ -233,7 +234,7 @@ class _TimerSettingsState extends State<TimerSettings> {
                 style: kButtonTextStyle,
               ),
             ),
-          ),
+          )
         ],
       ),
     );
