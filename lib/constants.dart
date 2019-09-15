@@ -60,7 +60,7 @@ const TextStyle kNewsLinkStyle = TextStyle(
 );
 
 const TextStyle kPrayersBodyTextStyle = TextStyle(
-  height: 1.2,
+  height: 1.4,
   fontSize: 18,
   color: Colors.white70,
 );
