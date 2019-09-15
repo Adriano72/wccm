@@ -50,7 +50,6 @@ class _TimerSettingsState extends State<TimerSettings> {
   @override
   void dispose() {
     advancedPlayer.stop();
-    advancedPlayer.dispose();
     super.dispose();
   }
 
@@ -80,7 +79,6 @@ class _TimerSettingsState extends State<TimerSettings> {
     int storedMedTimeMinutes = (prefs.getInt('timerPresetsMinutes'));
     return Duration(
         hours: storedMedTimeHour ?? 0, minutes: storedMedTimeMinutes ?? 20);
-    ;
   }
 
   Future<List> _getStoredBellSound() async {
@@ -88,7 +86,6 @@ class _TimerSettingsState extends State<TimerSettings> {
     String storedBellSound = (prefs.getString('selectedBellSound'));
     int storedCarouselPage = (prefs.getInt('initialBellSelectorPage'));
     return [storedBellSound, storedCarouselPage];
-    ;
   }
 
   static AudioPlayer advancedPlayer = AudioPlayer();

@@ -85,6 +85,7 @@ class _TimerRunState extends State<TimerRun> {
                   timerStarted = false;
                   sessionCompleted = true;
                   preparationNoticeVisibility = 1.0;
+                  timeIndicatorOpacity = 0;
                 } else {
                   medDuration = medDuration - oneSec;
                   updatePercentageIndicator();
@@ -141,8 +142,8 @@ class _TimerRunState extends State<TimerRun> {
                 ),
               ),
               AnimatedOpacity(
-                duration: const Duration(seconds: 5),
-                curve: Curves.easeInCirc,
+                duration: const Duration(seconds: 10),
+                curve: Curves.easeIn,
                 opacity: timeIndicatorOpacity,
                 child: CircularPercentIndicator(
                   circularStrokeCap: CircularStrokeCap.round,
