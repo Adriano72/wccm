@@ -137,6 +137,16 @@ class _HomeState extends State<Home> {
                 ),
                 ListTile(
                   leading: Image.asset(
+                    "assets/images/meditatio.png",
+                    width: 21.0,
+                  ),
+                  title: Text('Meditatio'),
+                  onTap: () {
+                    _launchURL('http://meditatio.co.uk');
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset(
                     "assets/images/meditatioCentre.png",
                     width: 21.0,
                   ),

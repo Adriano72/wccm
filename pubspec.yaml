@@ -2,7 +2,7 @@ name: wccm
 description: WCCM
 
 
-version: 1.6.0+7
+version: 1.7.0+8
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
