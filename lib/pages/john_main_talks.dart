@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:wccm/models/audio_data.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JohnMainTalks extends StatefulWidget {
   @override
@@ -70,6 +71,18 @@ class _JohnMainTalksState extends State<JohnMainTalks>
     });
     controller.forward();
     super.initState();
+  }
+
+  _launchURL(String url) async {
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (error) {
+      print('No internet!! cause of: $error');
+    }
   }
 
   @override
@@ -359,7 +372,20 @@ class _JohnMainTalksState extends State<JohnMainTalks>
                     _onTrackSelected,
                     'complete/02 - Baptism _ Water And Spirit.mp3',
                   ),
-//                  ListTile(),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      _launchURL('http://tiny.cc/JMCT');
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(25),
+                      color: Colors.blueGrey,
+                      child: Text(
+                        'These are extracts from the John Main Collected talks and you can order it going to the Medio Media website tapping this row',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
 //                  ListTile(),
 //                  ListTile(),
 //                  ListTile(),

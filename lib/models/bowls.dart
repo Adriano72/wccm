@@ -11,12 +11,8 @@ List<Bowl> bowls = [
     url: 'LaurenceBowl.mp3',
   ),
   Bowl(
-    name: 'Singing Bowl - High',
+    name: 'Singing Bowl High',
     url: 'HighToneSingingBowl.mp3',
-  ),
-  Bowl(
-    name: 'Big Singing Bowl',
-    url: 'BigSingingBowl.mp3',
   ),
   Bowl(
     name: 'Singing Bowl Hit Rub',
@@ -31,15 +27,7 @@ List<Bowl> bowls = [
     url: 'TibetanMetalBowlSoftMallet.mp3',
   ),
   Bowl(
-    name: 'Divine Himalayan Bowl High',
+    name: 'Divine Himalayan Bowl',
     url: 'DivineHimalayanBowl1.mp3',
-  ),
-  Bowl(
-    name: 'Divine Himalayan Bowl Low',
-    url: 'DivineHimalayanBowl2.mp3',
-  ),
-  Bowl(
-    name: 'Gong Crash',
-    url: 'Gong.mp3',
-  ),
+  )
 ];
