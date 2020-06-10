@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wccm/constants.dart';
 import 'package:wccm/pages/john_main_talks.dart';
+import 'package:wccm/pages/meditatio_cds.dart';
 
 class Resources extends StatelessWidget {
   @override
@@ -27,6 +28,13 @@ class Resources extends StatelessWidget {
               'John Main Talks',
               'For personal or group meditation',
               JohnMainTalks(),
+              context,
+            ),
+            _createLocalAudioCard(
+              FontAwesomeIcons.compactDisc,
+              'Meditatio Talks Series',
+              'All our Meditatio CDs',
+              MeditatioCDs(),
               context,
             ),
             _createResourceCard(

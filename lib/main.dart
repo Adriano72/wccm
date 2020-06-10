@@ -15,7 +15,7 @@ void main() {
 
   runApp(
     ChangeNotifierProvider<AudioData>(
-      builder: (context) => AudioData(),
+      create: (context) => AudioData(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: MyApp(),

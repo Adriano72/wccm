@@ -13,6 +13,25 @@ const kJMTalksListTilesTitle = TextStyle(
   fontSize: 14.0,
 );
 
+const kMeditatiotalksDetailHeaderTitle = TextStyle(
+  color: Colors.white,
+  fontSize: 18.0,
+  fontFamily: 'Montserrat',
+);
+
+const kMeditatiotalksDetailSeries = TextStyle(
+  color: Colors.white70,
+  fontSize: 14.0,
+  fontFamily: 'Montserrat',
+);
+
+const kMeditatiotalksHeaderTitle = TextStyle(
+  color: Colors.white,
+  fontSize: 14.0,
+  height: 1.6,
+  fontFamily: 'Montserrat',
+);
+
 const kJMTalksListTilesTrailing = TextStyle(
   color: Colors.white,
   fontSize: 12.0,
@@ -91,4 +110,4 @@ const String kWeeklyTeachingsURL =
     'https://wccm.org/sites/default/files/mobilefeedspages/2019/WeeklyTeachingsArchive.html';
 const String kMonthlyNewsURL =
     'https://wccm.org/sites/default/files/mobilefeedspages/2019/MonthlyNewsArchive.html';
-const String kOnlineGroupsURL = 'https://www.onlinemeditationwccm.org/';
+const String kOnlineGroupsURL = 'http://www.onlinemeditationwccm.org/';
