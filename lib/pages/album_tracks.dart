@@ -326,14 +326,16 @@ class _AlbumTracksState extends State<AlbumTracks>
                       widget.album['tracks'][index]['title'],
                       _onTrackSelected,
                       widget.album['tracks'][index]['url'],
+                      index + 1,
                     );
                   },
                   childCount: widget.album['tracks'].length,
                 ),
               ),
             ),
-            makeHeader('Ciao', true),
-            //SliverList(),
+            makeHeader(
+                'The tracks on this playlist are intended solely for personal non-commercial use. By downloading tracks from this playlist you agree to use the downloaded files only for personal, non-commercial use.',
+                false),
           ],
         ),
       ),
@@ -345,14 +347,22 @@ class AudioListTile extends StatelessWidget {
   final String title;
   final Function onTap;
   final String audioURL;
+  int progressive;
 
-  AudioListTile(this.title, this.onTap, this.audioURL);
+  AudioListTile(this.title, this.onTap, this.audioURL, this.progressive);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
+      /*leading: Icon(
         Icons.play_arrow,
+      ),*/
+      leading: Padding(
+        padding: const EdgeInsets.only(top: 5.0, left: 10.0),
+        child: Text(
+          progressive.toString(),
+          style: kJMTalksListTilesTitle,
+        ),
       ),
       title: Text(
         title,
