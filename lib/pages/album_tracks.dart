@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:wccm/constants.dart';
 import 'dart:math' as math;
@@ -8,8 +9,11 @@ import 'package:wccm/models/audio_data.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wccm/pages/meditatio_cds.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'dart:async';
 
 import 'dart:developer' as logger;
 
@@ -24,6 +28,25 @@ class _AlbumTracksState extends State<AlbumTracks>
     with SingleTickerProviderStateMixin {
   Animation<Color> animation;
   AnimationController controller;
+  File _cachedFile;
+
+  Future<Null> downloadFile(
+      String httpPath, String dirName, String fileName) async {
+    logger.log('DOWNLOAD PARAMS: $httpPath $dirName $fileName');
+    final Directory tempDir = Directory.systemTemp;
+    final File file = File('${tempDir.path}/$fileName');
+
+    final StorageReference ref =
+        FirebaseStorage.instance.ref().child('$dirName/$fileName');
+    final StorageFileDownloadTask downloadTask = ref.writeToFile(file);
+
+    final int byteNumber = (await downloadTask.future).totalByteCount;
+
+    print(byteNumber);
+
+    setState(() => _cachedFile = file);
+    logger.log('FILE: $file');
+  }
 
   SliverPersistentHeader makeHeader(String headerText, bool pinned) {
     return SliverPersistentHeader(
@@ -325,7 +348,10 @@ class _AlbumTracksState extends State<AlbumTracks>
                     return AudioListTile(
                       widget.album['tracks'][index]['title'],
                       _onTrackSelected,
+                      downloadFile,
                       widget.album['tracks'][index]['url'],
+                      widget.album['tracks'][index]['fileName'],
+                      widget.album['_storage_folder'],
                       index + 1,
                     );
                   },
@@ -346,10 +372,14 @@ class _AlbumTracksState extends State<AlbumTracks>
 class AudioListTile extends StatelessWidget {
   final String title;
   final Function onTap;
+  final Function downloadFunc;
   final String audioURL;
+  final String fileName;
+  final String dirName;
   int progressive;
 
-  AudioListTile(this.title, this.onTap, this.audioURL, this.progressive);
+  AudioListTile(this.title, this.onTap, this.downloadFunc, this.audioURL,
+      this.fileName, this.dirName, this.progressive);
 
   @override
   Widget build(BuildContext context) {
@@ -368,7 +398,11 @@ class AudioListTile extends StatelessWidget {
         title,
         style: kJMTalksListTilesTitle,
       ),
-      onTap: () => onTap(audioURL, title),
+      //onTap: () => onTap(audioURL, title),
+      onTap: () async {
+        await downloadFunc(audioURL, dirName, fileName);
+        onTap(audioURL, title);
+      },
     );
   }
 }
